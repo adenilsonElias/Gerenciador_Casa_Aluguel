@@ -16,7 +16,7 @@
   <property name="windowTitle">
    <string>cadastrar</string>
   </property>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="campo_nome">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -26,7 +26,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="campo_CPF">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -36,7 +36,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_3">
+  <widget class="QLineEdit" name="campo_RG">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -85,7 +85,7 @@
     <string>RG</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="botao_concluir">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -98,7 +98,7 @@
     <string>concluir</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="botao_cancelar">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -124,7 +124,7 @@
     <string>Casa</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QComboBox" name="comboBox_casa">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -136,12 +136,12 @@
   </widget>
  </widget>
  <tabstops>
-  <tabstop>lineEdit</tabstop>
-  <tabstop>lineEdit_2</tabstop>
-  <tabstop>lineEdit_3</tabstop>
-  <tabstop>comboBox</tabstop>
-  <tabstop>pushButton</tabstop>
-  <tabstop>pushButton_2</tabstop>
+  <tabstop>campo_nome</tabstop>
+  <tabstop>campo_CPF</tabstop>
+  <tabstop>campo_RG</tabstop>
+  <tabstop>comboBox_casa</tabstop>
+  <tabstop>botao_concluir</tabstop>
+  <tabstop>botao_cancelar</tabstop>
  </tabstops>
  <resources/>
  <connections/>

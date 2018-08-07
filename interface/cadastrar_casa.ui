@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Cadastrar casa</string>
   </property>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="campo_nomeDaCasa">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -26,7 +26,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="campo_valorDoAluguel">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -39,7 +39,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox">
+  <widget class="QCheckBox" name="checkBox_aguaInclusa">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -78,7 +78,7 @@
     <string>Valor do aluguel</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox_2">
+  <widget class="QCheckBox" name="checkBox_luzinclusa">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -91,7 +91,7 @@
     <string>Luz inclusa</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="botao_concluir">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -104,7 +104,7 @@
     <string>Concluir</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="botao_cancelar">
    <property name="geometry">
     <rect>
      <x>10</x>

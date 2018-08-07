@@ -1,18 +1,18 @@
-from cadastrar import Ui_Cadastrar
+from cadastrar_inquilino import Ui_Cadastrar
 from cadastrar_casa import Ui_Cadastrar_casa
 from Menu import Ui_Menu
 
 class interagir_Inquilino(Ui_Cadastrar):
     def on_click(self):
-        self.pushButton.clicked.connect(self.pegarItens)
-        self.pushButton_2.clicked.connect(self.cancelar)
+        self.botao_concluir.clicked.connect(self.pegarItens)
+        self.botao_cancelar.clicked.connect(self.cancelar)
     
     def pegarItens(self):
         info = {
-            "nome": self.lineEdit.text(),
-            "CPF" : self.lineEdit_2.text(),
-            "RG"  : self.lineEdit_3.text(),
-            "casa": self.comboBox.currentText()
+            "nome": self.campo_nome.text(),
+            "CPF" : self.campo_CPF.text(),
+            "RG"  : self.campo_RG.text(),
+            "casa": self.comboBox_casa.currentText()
         }
         print(info)
     
@@ -20,22 +20,22 @@ class interagir_Inquilino(Ui_Cadastrar):
         exit(0)
     
     def addInList(self):
-        self.comboBox.addItems(["casa 1","casa 2","casa 3"])
+        self.comboBox_casa.addItems(["casa 1","casa 2","casa 3"])
 
 class interagir_casa(Ui_Cadastrar_casa):
     def on_click(self):
-        self.pushButton.clicked.connect(self.pegarItens)
-        self.pushButton_2.clicked.connect(self.sair)
+        self.botao_concluir.clicked.connect(self.pegarItens)
+        self.botao_cancelar.clicked.connect(self.sair)
 
     def sair(self):
         exit(0)
 
     def pegarItens(self):
         info = {
-            "nome casa": self.lineEdit.text(),
-            "aluguel": self.lineEdit_2.text(),
-            "agua inclusa": self.checkBox.checkState(),
-            "luz inclusa": self.checkBox_2.checkState()
+            "nome casa": self.campo_nomeDaCasa.text(),
+            "aluguel": self.campo_valorDoAluguel.text(),
+            "agua inclusa": self.checkBox_aguaInclusa.checkState(),
+            "luz inclusa": self.checkBox_luzinclusa.checkState()
         }
         print(info)
 
