@@ -17,7 +17,7 @@ class interagir_Inquilino(Ui_Cadastrar):
         print(info)
     
     def cancelar(self):
-        exit(0)
+        pass
     
     def addInList(self):
         self.comboBox_casa.addItems(["casa 1","casa 2","casa 3"])
@@ -28,7 +28,7 @@ class interagir_casa(Ui_Cadastrar_casa):
         self.botao_cancelar.clicked.connect(self.sair)
 
     def sair(self):
-        exit(0)
+        pass
 
     def pegarItens(self):
         info = {
@@ -46,15 +46,23 @@ class interagir_menu(Ui_Menu):
         self.Fechar.clicked.connect(self.fechar)
     
     def fechar(self):
-        exit(0)
+        pass
 
     def inquilino(self):
-        from tastarInterface import cadastrar_inquilino
-        a = cadastrar_inquilino()
-        a.show
+        from PyQt5 import QtWidgets
+        self.window = QtWidgets.QWidget()
+        self.ui = interagir_Inquilino()
+        self.ui.setupUi(self.window)
+        self.ui.on_click()
+        self.window.show()
+    
     def casa (self):
-        from tastarInterface import cadastrar_Casa
-        a = cadastrar_Casa()
-        a.show()
+        from PyQt5 import QtWidgets
+        self.window = QtWidgets.QWidget()
+        self.ui = interagir_casa()
+        self.ui.setupUi(self.window)
+        self.ui.on_click()
+        self.window.show()
+    
     
     
