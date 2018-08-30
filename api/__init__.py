@@ -1,6 +1,12 @@
 """
-API do GErenciador de Casas de Aluguel
---------------------------------------
+API do Gerenciador de Casas de Aluguel
+======================================
+
+Import:
+
+```python
+from api import Contrato_DAO, Casa_DAO, Inquilino_DAO, make_connection, make_engine, models
+```
 
 """
 from sqlalchemy import create_engine
@@ -12,14 +18,14 @@ import config
 
 def make_engine():
     """
-    TODO
+    Devolve a engine do banco de dados de acordo com a configuração do projeto
     """
     return create_engine(config.DATABASE_URL)
 
 
 def make_connection(engine):
     """
-    TODO
+    Devolve a sessão de acesso a engine do BD
     """
     if engine is None:
         raise Exception("Necessário prover uma conexão")
@@ -30,7 +36,7 @@ def make_connection(engine):
 
 class DAO():
     """
-    TODO
+    Classe Modelo de Data Access Object
     """
 
     def __init__(self, session):
@@ -42,13 +48,24 @@ class DAO():
 
 class Casa_DAO(DAO):
     """
-    TODO
+    Classe de Acesso de dados das Casas
+
+    Usage
+    -----
+    ```python
+    casas = Casa_DAO(session)
+    ```
     """
 
     def adiciona_casa(self, id=None, nome=None, valor_aluguel=None,
                       agua=None, instalacao_eletrica=None):
         """
-        TODO
+        Usage:
+        ```python
+        casa = casas.adiciona_casa(nome=..., valor_aluguel=..., 
+                                   [id=..., agua=..., instalacao_eletrica=...])
+        )
+        ```
         """
         if None in [nome, valor_aluguel]:
             raise Exception("Campos Obrigatórios Faltantes")
@@ -72,12 +89,25 @@ class Casa_DAO(DAO):
 
 class Instalacao_Eletrica_DAO(DAO):
     """
-    TODO
+    Classe de Acesso de dados das Instalações Eletricas
+
+    Usage
+    -----
+    ```python
+    instalacoes = Instalacao_Eletrica_DAO(session)
+    ```
     """
 
     def adiciona_instalacao_eletrica(self, num_instalacao=None, cpf=None):
         """
-        TODO
+        Usage:
+        ```python
+        instalacao = instalacoes.adiciona_instalacao_eletrica(
+            num_instalacao= ... ,
+            cpf= ... 
+        )
+        
+        ```
         """
 
         if None in [num_instalacao, cpf]:
@@ -95,14 +125,29 @@ class Instalacao_Eletrica_DAO(DAO):
 
 class Inquilino_DAO(DAO):
     """
-    TODO
+    Classe de Acesso de dados dos Inquilinos
+
+    Usage
+    -----
+    ```python
+    inquilinos = Inquilinos_DAO(session)
+    ```
     """
 
     def adiciona_inquilino(self, id=None, cpf=None, nome=None, rg=None):
         """
-        TODO
+        Usage:
+        ```python
+        inq = inquilinos.adiciona_inquilino(
+            cpf= ... ,
+            nome= ... ,
+            rg= ... ,
+            [id= ... ]
+        )
+        
+        ```
         """
-        if None in [id, cpf, nome, rg]:
+        if None in [cpf, nome, rg]:
             raise Exception("Campos Obrigatórios Faltantes")
             # TODO: separar raises
         inq = Inquilino()
@@ -119,15 +164,32 @@ class Inquilino_DAO(DAO):
 
 class Contrato_DAO(DAO):
     """
-    TODO
+    Classe de Acesso de dados dos Contratos
+
+    Usage
+    -----
+    ```python
+    contratod = Contratos_DAO(session)
+    ```
     """
 
     def adiciona_contrato(self, id=None, valor=None, ativo=None,
                           venc=None, casa=None, inq=None):
         """
-        TODO
+        Usage:
+        ```python
+        contrato = contratos.adiciona_contrato(
+            valor= ... ,
+            ativo= ... ,
+            venc= ...,
+            casa= ...,
+            inq= ...,
+            [id= ... ,]
+        )
+        
+        ```
         """
-        if None in [id, valor, ativo, venc, casa, inq]:
+        if None in [valor, ativo, venc, casa, inq]:
             raise Exception("Campos Obrigatórios Faltantes")
             # TODO: separar raises
         c = Contrato()
