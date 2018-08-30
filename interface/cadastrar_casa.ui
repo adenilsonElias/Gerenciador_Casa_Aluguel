@@ -2,13 +2,22 @@
 <ui version="4.0">
  <class>Cadastrar_casa</class>
  <widget class="QWidget" name="Cadastrar_casa">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>128</width>
-    <height>277</height>
+    <width>210</width>
+    <height>408</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Cadastrar casa</string>
@@ -18,7 +27,7 @@
     <rect>
      <x>10</x>
      <y>30</y>
-     <width>113</width>
+     <width>191</width>
      <height>32</height>
     </rect>
    </property>
@@ -31,7 +40,7 @@
     <rect>
      <x>10</x>
      <y>90</y>
-     <width>113</width>
+     <width>191</width>
      <height>32</height>
     </rect>
    </property>
@@ -82,7 +91,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>160</y>
+     <y>220</y>
      <width>101</width>
      <height>22</height>
     </rect>
@@ -95,7 +104,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>190</y>
+     <y>370</y>
      <width>88</width>
      <height>34</height>
     </rect>
@@ -107,9 +116,9 @@
   <widget class="QPushButton" name="botao_cancelar">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>230</y>
-     <width>88</width>
+     <x>110</x>
+     <y>370</y>
+     <width>91</width>
      <height>34</height>
     </rect>
    </property>
@@ -117,6 +126,95 @@
     <string>Cancelar</string>
    </property>
   </widget>
+  <widget class="QLineEdit" name="campo_numero_instalacao">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>270</y>
+     <width>191</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="RGI">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>180</y>
+     <width>191</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>310</y>
+     <width>81</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>CPF do titular</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="CPF_titular">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>330</y>
+     <width>191</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>250</y>
+     <width>141</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Numero de instalacao</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>160</y>
+     <width>58</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>RGI</string>
+   </property>
+  </widget>
+  <zorder>RGI</zorder>
+  <zorder>campo_numero_instalacao</zorder>
+  <zorder>checkBox_aguaInclusa</zorder>
+  <zorder>checkBox_luzinclusa</zorder>
+  <zorder>campo_nomeDaCasa</zorder>
+  <zorder>campo_valorDoAluguel</zorder>
+  <zorder>label</zorder>
+  <zorder>label_2</zorder>
+  <zorder>botao_concluir</zorder>
+  <zorder>botao_cancelar</zorder>
+  <zorder>label_3</zorder>
+  <zorder>CPF_titular</zorder>
+  <zorder>label_4</zorder>
+  <zorder>label_5</zorder>
  </widget>
  <resources/>
  <connections/>

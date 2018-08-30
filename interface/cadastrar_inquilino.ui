@@ -9,12 +9,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>208</width>
-    <height>294</height>
+    <width>202</width>
+    <height>505</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>cadastrar</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QLineEdit" name="campo_nome">
    <property name="geometry">
@@ -89,26 +92,26 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>250</y>
+     <y>470</y>
      <width>88</width>
      <height>34</height>
     </rect>
    </property>
    <property name="text">
-    <string>concluir</string>
+    <string>Concluir</string>
    </property>
   </widget>
   <widget class="QPushButton" name="botao_cancelar">
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>250</y>
-     <width>88</width>
+     <y>470</y>
+     <width>81</width>
      <height>34</height>
     </rect>
    </property>
    <property name="text">
-    <string>cancelar</string>
+    <string>Cancelar</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -132,6 +135,91 @@
      <width>181</width>
      <height>32</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="tipo_aluguel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>370</y>
+     <width>121</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Aluguel padrao</string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="Novo_aluguel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>430</y>
+     <width>181</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>250</y>
+     <width>81</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Vencimento</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="vencimento">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>270</y>
+     <width>181</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="inicio_do_contrato">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>330</y>
+     <width>181</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>310</y>
+     <width>181</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Inicio do contrato</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>400</y>
+     <width>91</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Novo Aluguel</string>
    </property>
   </widget>
  </widget>
