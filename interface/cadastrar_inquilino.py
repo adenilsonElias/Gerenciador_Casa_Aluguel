@@ -1,5 +1,8 @@
+import sys
+sys.path.insert(0, '..') 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.uic import loadUi
+from api import *
 class interagir_Inquilino(QWidget):
     def __init__(self):
         super().__init__()
@@ -21,6 +24,12 @@ class interagir_Inquilino(QWidget):
             "inicio_contrato": self.inicio_do_contrato.text(),
             "novo_aluguel": self.Novo_aluguel.text()
         }
+        engine = make_engine()
+        session = make_connection(engine)
+        inq = Inquilino_DAO(session)
+        inq.adiciona_inquilino(cpf=self.campo_CPF.text(),
+                                nome=self.campo_nome.text(),
+                                rg=self.campo_RG.text(),)
         print(info)
         self.cancelar()
     
@@ -44,5 +53,8 @@ class interagir_Inquilino(QWidget):
         self.close()
     
     def addInList(self):
-        self.comboBox_casa.addItems(["casa 1","casa 2","casa 3"])
+        engine = make_engine()
+        session = make_connection(engine)
+        casa = Casa_DAO(session)
+        self.comboBox_casa.addItems(casa.todas_casas())
 

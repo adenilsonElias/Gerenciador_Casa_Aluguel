@@ -1,5 +1,6 @@
-from .. import api
-
+import sys
+sys.path.insert(0, '..') 
+from api import *
 from PyQt5.QtWidgets import QWidget
 from PyQt5.uic import loadUi
 
@@ -85,7 +86,20 @@ class interagir_casa(QWidget):
             "agua inclusa": self.checkBox_aguaInclusa.checkState(),
             "luz inclusa": self.checkBox_luzinclusa.checkState(),
             "RGI": self.RGI.text(),
-            "instalacao": self.campo_numero_instalacao.text()
+            "instalacao": self.campo_numero_instalacao.text(),
+            "cpf": self.CPF_titular.text()
         }
+
+        engine = make_engine()
+        session = make_connection(engine)
+        casas = Casa_DAO(session)
+        instalacao = None
+        if self.checkBox_luzinclusa == 2:
+            ins = Instalacao_Eletrica_DAO(session)
+            instalacao = ins.adiciona_instalacao_eletrica(self.campo_numero_instalacao.text(),
+                                            self.CPF_titular.text())
+        casas.adiciona_casa(nome=self.campo_nomeDaCasa.text(),
+                            valor_aluguel=self.campo_valorDoAluguel.text(),
+                            agua=self.RGI.text(),instalacao_eletrica=instalacao)         
         print(info)
         self.sair()
