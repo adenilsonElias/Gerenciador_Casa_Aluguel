@@ -84,7 +84,7 @@ class Casa_DAO(DAO):
         return casa
 
     def todas_casas(self):
-        return [x for x in self.session.query(Casa).all()]
+        return [str(x) for x in self.session.query(Casa).all()]
 
 
 class Instalacao_Eletrica_DAO(DAO):
