@@ -121,6 +121,10 @@ class Instalacao_Eletrica_DAO(DAO):
         self.session.commit()
 
         return instalacao
+    
+    def todas_instalacoes(self):
+        return [x for x in self.session.query(Instalacao_Eletrica).all()]
+
 
 
 class Inquilino_DAO(DAO):
@@ -160,6 +164,8 @@ class Inquilino_DAO(DAO):
         self.session.commit()
 
         return inq
+    def todos_inquilinos(self):
+        return [x for x in self.session.query(Inquilino).all()]
 
 
 class Contrato_DAO(DAO):
@@ -204,3 +210,5 @@ class Contrato_DAO(DAO):
         self.session.commit()
 
         return c
+    def todos_contratos(self):
+        return [x for x in self.session.query(Contrato).all()]
