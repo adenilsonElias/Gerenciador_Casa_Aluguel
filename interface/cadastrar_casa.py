@@ -24,16 +24,6 @@ class interagir_casa(QWidget):
         self.hide()
         self.close()
 
-    def move_incremento(self):
-        self.botao_concluir.move(10, self.botao_concluir.y() + 36)
-        self.botao_cancelar.move(10, self.botao_cancelar.y() + 33)
-        self.resize(128, self.height() + 32)
-
-    def move_decrementa(self):
-        self.botao_concluir.move(10, self.botao_concluir.y() - 36)
-        self.botao_cancelar.move(10, self.botao_cancelar.y() - 33)
-        self.resize(128, self.height() - 32)
-
     def mostrar_RGI(self):
 
         if self.checkBox_aguaInclusa.checkState() == 2:
@@ -67,6 +57,7 @@ class interagir_casa(QWidget):
             self.botao_cancelar.move(
                 self.botao_cancelar.x(), self.CPF_titular.y() + 40)
             self.resize(self.width(), self.botao_concluir.y() + 40)
+            self.setFixedSize(self.width(), self.botao_concluir.y() + 40)
 
         else:
             self.label_4.hide()
@@ -78,9 +69,10 @@ class interagir_casa(QWidget):
             self.botao_cancelar.move(
                 self.botao_cancelar.x(), self.checkBox_luzinclusa.y() + 30)
             self.resize(self.width(), self.botao_concluir.y() + 40)
+            self.setFixedSize(self.width(), self.botao_concluir.y() + 40)
 
     def pegarItens(self):
-        info = {
+        info = { # list apenas para teste
             "nome casa": self.campo_nomeDaCasa.text(),
             "aluguel": self.campo_valorDoAluguel.text(),
             "agua inclusa": self.checkBox_aguaInclusa.checkState(),
@@ -89,7 +81,6 @@ class interagir_casa(QWidget):
             "instalacao": self.campo_numero_instalacao.text(),
             "cpf": self.CPF_titular.text()
         }
-
         engine = make_engine()
         session = make_connection(engine)
         casas = Casa_DAO(session)
@@ -99,7 +90,9 @@ class interagir_casa(QWidget):
             instalacao = ins.adiciona_instalacao_eletrica(self.campo_numero_instalacao.text(),
                                             self.CPF_titular.text())
         casas.adiciona_casa(nome=self.campo_nomeDaCasa.text(),
-                            valor_aluguel=self.campo_valorDoAluguel.text(),
+                            valor_aluguel=float(self.campo_valorDoAluguel.text()),
                             agua=self.RGI.text(),instalacao_eletrica=instalacao)         
         print(info)
         self.sair()
+
+
