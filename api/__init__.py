@@ -67,9 +67,11 @@ class Casa_DAO(DAO):
         )
         ```
         """
-        if None in [nome, valor_aluguel]:
-            raise Exception("Campos Obrigatórios Faltantes")
-            # TODO: separar raises
+        if nome is None:
+            raise Exception("Necessário prover nome.")
+        if valor_aluguel is None:
+            raise Exception("Necessário prover um valor para o aluguel.")
+
         casa = Casa()
         casa.id_casa = id
         casa.nome_casa = nome
@@ -110,9 +112,10 @@ class Instalacao_Eletrica_DAO(DAO):
         ```
         """
 
-        if None in [num_instalacao, cpf]:
-            raise Exception("Campos Obrigatórios Faltantes")
-            # TODO: separar raises
+        if num_instalacao is None:
+            raise Exception("Necessário prover um número de instalação")
+        if cpf is None:
+            raise Exception("Necessário prover um número de CPF")
         instalacao = Instalacao_Eletrica()
         instalacao.num_instalacao = num_instalacao
         instalacao.cpf_titular = cpf
@@ -151,9 +154,10 @@ class Inquilino_DAO(DAO):
         
         ```
         """
-        if None in [cpf, nome, rg]:
-            raise Exception("Campos Obrigatórios Faltantes")
-            # TODO: separar raises
+        if cpf is None:
+            raise Exception("Necessário prover um número de CPF")
+        if nome is None:
+            raise Exception("Necessário prover um Nome")
         inq = Inquilino()
         inq.id_inq = id
         inq.nome_inq = nome
@@ -179,7 +183,7 @@ class Contrato_DAO(DAO):
     ```
     """
 
-    def adiciona_contrato(self, id=None, valor=None, ativo=None,
+    def adiciona_contrato(self, id=None, valor=None, ativo=True,
                           venc=None, casa=None, inq=None):
         """
         Usage:
@@ -198,6 +202,16 @@ class Contrato_DAO(DAO):
         if None in [valor, ativo, venc, casa, inq]:
             raise Exception("Campos Obrigatórios Faltantes")
             # TODO: separar raises
+        if cpf is None:
+            raise Exception("Necessário prover um número de CPF")
+        if valor is None:
+            raise Exception("Necessário prover um valor de aluguel para o contrato")
+        if venc is None:
+            raise Exception("Necessário prover uma data de vencimento")
+        if casa is None:
+            raise Exception("Necessário escolher uma casa")
+        if inq is None:
+            raise Exception("Necessário escolher um inquilino")
         c = Contrato()
         c.id_contrato = id
         c.valor = valor
