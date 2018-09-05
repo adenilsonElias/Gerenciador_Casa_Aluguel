@@ -7,7 +7,7 @@ class interagir_menu(QWidget):
     def __init__(self):
         super().__init__()
         self.ui = self
-        loadUi("Menu.ui",self.ui)
+        loadUi("interface/Menu.ui",self.ui)
         self.on_click()
         self.show()
 

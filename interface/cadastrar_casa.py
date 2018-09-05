@@ -9,7 +9,7 @@ class interagir_casa(QWidget):
     def __init__(self):
         super().__init__()
         self.ui = self
-        loadUi("cadastrar_casa.ui", self)
+        loadUi("interface/cadastrar_casa.ui", self)
         self.mostrar_RGI()
         self.mostrar_instalacao()
         self.ui.botao_concluir.clicked.connect(self.pegarItens)
@@ -85,10 +85,10 @@ class interagir_casa(QWidget):
         session = make_connection(engine)
         casas = Casa_DAO(session)
         instalacao = None
-        if self.checkBox_luzinclusa == 2:
+        if self.checkBox_luzinclusa.checkState() == 2:
             ins = Instalacao_Eletrica_DAO(session)
-            instalacao = ins.adiciona_instalacao_eletrica(self.campo_numero_instalacao.text(),
-                                            self.CPF_titular.text())
+            instalacao = ins.adiciona_instalacao_eletrica(num_instalacao=self.campo_numero_instalacao.text(),
+                                            cpf=self.CPF_titular.text())
         casas.adiciona_casa(nome=self.campo_nomeDaCasa.text(),
                             valor_aluguel=float(self.campo_valorDoAluguel.text()),
                             agua=self.RGI.text(),instalacao_eletrica=instalacao)         

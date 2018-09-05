@@ -9,7 +9,7 @@ class interagir_Inquilino(QWidget):
     def __init__(self):
         super().__init__()
         self.ui = self
-        loadUi("cadastrar_inquilino.ui",self.ui)
+        loadUi("interface/cadastrar_inquilino.ui",self.ui)
         self.botao_concluir.clicked.connect(self.pegarItens)
         self.botao_cancelar.clicked.connect(self.cancelar)
         self.tipo_aluguel.stateChanged.connect(self.novo_aluguel)
