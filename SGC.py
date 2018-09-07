@@ -1,5 +1,6 @@
 import sys
 sys.path.insert(0, 'interface/')
+sys.path.insert(0, 'api/')
 from PyQt5.QtWidgets import QApplication
 from Menu import interagir_menu
     

@@ -1,5 +1,3 @@
-import sys
-sys.path.insert(0, '..') 
 from api import *
 from PyQt5.QtWidgets import QWidget
 from PyQt5.uic import loadUi
@@ -9,14 +7,13 @@ class interagir_casa(QWidget):
     def __init__(self):
         super().__init__()
         self.ui = self
-        loadUi("interface/cadastrar_casa.ui", self)
+        loadUi("interface/cadastrar_casa.ui", self.ui)
         self.mostrar_RGI()
         self.mostrar_instalacao()
-        self.ui.botao_concluir.clicked.connect(self.pegarItens)
-        self.ui.botao_cancelar.clicked.connect(self.sair)
-        self.ui.checkBox_aguaInclusa.stateChanged.connect(self.mostrar_RGI)
-        self.ui.checkBox_luzinclusa.stateChanged.connect(
-            self.mostrar_instalacao)
+        self.botao_concluir.clicked.connect(self.pegarItens)
+        self.botao_cancelar.clicked.connect(self.sair)
+        self.checkBox_aguaInclusa.stateChanged.connect(self.mostrar_RGI)
+        self.checkBox_luzinclusa.stateChanged.connect(self.mostrar_instalacao)
         self.show()
 
     def sair(self):
@@ -90,7 +87,7 @@ class interagir_casa(QWidget):
             instalacao = ins.adiciona_instalacao_eletrica(num_instalacao=self.campo_numero_instalacao.text(),
                                             cpf=self.CPF_titular.text())
         casas.adiciona_casa(nome=self.campo_nomeDaCasa.text(),
-                            valor_aluguel=float(self.campo_valorDoAluguel.text()),
+                            valor_aluguel=self.campo_valorDoAluguel.text(),
                             agua=self.RGI.text(),instalacao_eletrica=instalacao)         
         print(info)
         self.sair()

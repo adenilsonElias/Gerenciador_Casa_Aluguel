@@ -1,5 +1,3 @@
-import sys
-sys.path.insert(0, '..') # temporario
 from PyQt5.QtWidgets import QWidget
 from PyQt5.uic import loadUi
 from api import *
