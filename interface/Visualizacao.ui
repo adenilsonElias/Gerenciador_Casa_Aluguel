@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>415</width>
+    <width>456</width>
     <height>302</height>
    </rect>
   </property>
@@ -28,6 +28,21 @@
    <property name="usesScrollButtons">
     <bool>false</bool>
    </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Contrato</string>
+    </attribute>
+    <widget class="QTableView" name="tabelaContrato">
+     <property name="geometry">
+      <rect>
+       <x>-2</x>
+       <y>-2</y>
+       <width>417</width>
+       <height>270</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
    <widget class="QWidget" name="tabWidgetPage1">
     <attribute name="title">
      <string>Casa</string>
@@ -35,10 +50,10 @@
     <widget class="QTableView" name="tabelaCasa">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>411</width>
-       <height>271</height>
+       <x>-2</x>
+       <y>-2</y>
+       <width>421</width>
+       <height>270</height>
       </rect>
      </property>
     </widget>
@@ -52,7 +67,7 @@
       <rect>
        <x>-2</x>
        <y>-2</y>
-       <width>411</width>
+       <width>417</width>
        <height>271</height>
       </rect>
      </property>

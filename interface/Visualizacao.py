@@ -8,16 +8,8 @@ class visualizacao(QWidget):
         super().__init__()
         self.ui = self
         loadUi("interface/Visualizacao.ui",self.ui)
+        self.carrega()
         self.tabWidget.currentChanged.connect(self.atualizar)
-        self.carregar_inq()
-        self.mostrar_inq()
-        a = self.tabelaInq.horizontalHeader()
-        a.stretchLastSection()
-        self.carregar_casa()
-        self.mostrar_casa()
-        a = self.tabelaCasa.horizontalHeader()
-        a.stretchLastSection()
-        self.tabelaInq.resizeColumnsToContents()
         self.atualizar()
         self.show()
     
@@ -25,10 +17,7 @@ class visualizacao(QWidget):
         self.model = QtGui.QStandardItemModel()
         self.model.setHorizontalHeaderLabels(["Nome","CPF","RG"])
 
-        engine = make_engine()
-        session = make_connection(engine)
-        inq = Inquilino_DAO(session)
-        inquilinos = inq.todos_inquilinos()
+        inquilinos = self.Inquilino.todos_inquilinos()
         for i in inquilinos:
             info = [i.nome_inq,i.cpf_inq,i.rg_inq]
             capsula = []
@@ -42,10 +31,7 @@ class visualizacao(QWidget):
         self.model = QtGui.QStandardItemModel()
         self.model.setHorizontalHeaderLabels(["Nome","Valor Aluguel","RGI","CPF","numero estalacao"])
 
-        engine = make_engine()
-        session = make_connection(engine)
-        casa = Casa_DAO(session)
-        casas = casa.todas_casas()
+        casas = self.Casa.todas_casas()
         for i in casas:
             info = [i.nome_casa,str(float(i.valor_aluguel_casa)),i.agua_casa,"NULL",str(i.num_instalacao_eletrica)]
             capsula = []
@@ -55,20 +41,70 @@ class visualizacao(QWidget):
                 capsula.append(item)
             self.model.appendRow(capsula)
     
+    def carregar_contrato(self):
+        self.model = QtGui.QStandardItemModel()
+        self.model.setHorizontalHeaderLabels(["Inquilino","Casa","Valor","Ativo","vencimento"])
+
+        casas = self.Casa.todas_casas()
+        inquilinos = self.Inquilino.todos_inquilinos()
+        contratos = self.Contrato.todos_contratos()
+
+        for i in contratos:
+            info_casa = [x.nome_casa for x in casas if x.id_casa == i.id_casa]
+            info_inqui = [x.nome_inq for x in inquilinos if x.id_inq == i.id_inq]
+            info = [str(info_inqui[0]),str(info_casa[0]),str(float(i.valor)),str(i.ativo),str(i.venc_contrato)]
+            capsula = []
+            for j in info:
+                item = QtGui.QStandardItem(j)
+                item.setEditable(False)
+                capsula.append(item)
+            self.model.appendRow(capsula)
+
     def mostrar_inq(self):
         self.tabelaInq.setModel(self.model)
     
     def mostrar_casa(self):
         self.tabelaCasa.setModel(self.model)
     
+    def mostrar_contrato(self):
+        self.tabelaContrato.setModel(self.model)
+
     def atualizar(self):
         if self.tabWidget.currentIndex() == 0:
-            a = self.tabelaCasa.horizontalHeader()
-            self.tabelaCasa.resize(a.length()+20,self.height())
+            self.carregar_contrato()
+            self.mostrar_contrato()
+            a = self.tabelaContrato.horizontalHeader()
+            a.stretchLastSection()
+            self.tabelaContrato.resizeColumnsToContents()
+
+            self.tabelaContrato.resize(a.length()+20,self.height())
             self.tabWidget.resize(a.length()+25,self.height())
             self.resize(a.length()+25,self.height())
+
         elif self.tabWidget.currentIndex() == 1:
+            self.carregar_casa()
+            self.mostrar_casa()
+            a = self.tabelaCasa.horizontalHeader()
+            a.stretchLastSection()
+            self.tabelaCasa.resizeColumnsToContents()
+
+            self.tabelaCasa.resize(a.length()+20,self.height())
+            self.tabWidget.resize(a.length()+25,self.height())
+            self.resize(a.length()+25,self.height()
+            )
+        elif self.tabWidget.currentIndex() == 2:
+            self.carregar_inq()
+            self.mostrar_inq()
             a = self.tabelaInq.horizontalHeader()
+            a.stretchLastSection()
+            self.tabelaInq.resizeColumnsToContents()
             self.tabelaInq.resize(a.length()+20,self.height())
             self.tabWidget.resize(a.length()+20,self.height())
             self.resize(a.length()+20,self.height())
+    
+    def carrega(self):
+        engine = make_engine()
+        session = make_connection(engine)
+        self.Casa = Casa_DAO(session)
+        self.Inquilino = Inquilino_DAO(session)
+        self.Contrato = Contrato_DAO(session)
