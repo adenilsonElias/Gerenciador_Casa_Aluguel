@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget
-from PyQt5 import QtGui
+from PyQt5 import QtGui,QtCore
 from PyQt5.uic import loadUi
 from api import *
 
@@ -8,8 +8,10 @@ class visualizacao(QWidget):
         super().__init__()
         self.ui = self
         loadUi("interface/Visualizacao.ui",self.ui)
+        # print(mouse.windowPos())
         self.carrega()
         self.tabWidget.currentChanged.connect(self.atualizar)
+        self.Gerar_recibo.clicked.connect(self.recibo)
         self.atualizar()
         self.show()
     
@@ -38,12 +40,14 @@ class visualizacao(QWidget):
             for j in info:
                 item = QtGui.QStandardItem(j)
                 item.setEditable(False)
+                item.setEnabled(True)
                 capsula.append(item)
             self.model.appendRow(capsula)
     
     def carregar_contrato(self):
         self.model = QtGui.QStandardItemModel()
         self.model.setHorizontalHeaderLabels(["Inquilino","Casa","Valor","Ativo","vencimento"])
+        
 
         casas = self.Casa.todas_casas()
         inquilinos = self.Inquilino.todos_inquilinos()
@@ -57,6 +61,7 @@ class visualizacao(QWidget):
             for j in info:
                 item = QtGui.QStandardItem(j)
                 item.setEditable(False)
+                item.setSelectable(False)
                 capsula.append(item)
             self.model.appendRow(capsula)
 
@@ -71,6 +76,7 @@ class visualizacao(QWidget):
 
     def atualizar(self):
         if self.tabWidget.currentIndex() == 0:
+            self.mostrar_Botoes()
             self.carregar_contrato()
             self.mostrar_contrato()
             a = self.tabelaContrato.horizontalHeader()
@@ -79,9 +85,10 @@ class visualizacao(QWidget):
 
             self.tabelaContrato.resize(a.length()+20,self.height())
             self.tabWidget.resize(a.length()+25,self.height())
-            self.resize(a.length()+25,self.height())
+            self.mostrar_Botoes()
 
         elif self.tabWidget.currentIndex() == 1:
+            self.esconder_Botoes()
             self.carregar_casa()
             self.mostrar_casa()
             a = self.tabelaCasa.horizontalHeader()
@@ -90,9 +97,10 @@ class visualizacao(QWidget):
 
             self.tabelaCasa.resize(a.length()+20,self.height())
             self.tabWidget.resize(a.length()+25,self.height())
-            self.resize(a.length()+25,self.height()
-            )
+            self.resize(a.length()+25,self.height())
+
         elif self.tabWidget.currentIndex() == 2:
+            self.esconder_Botoes()
             self.carregar_inq()
             self.mostrar_inq()
             a = self.tabelaInq.horizontalHeader()
@@ -108,3 +116,32 @@ class visualizacao(QWidget):
         self.Casa = Casa_DAO(session)
         self.Inquilino = Inquilino_DAO(session)
         self.Contrato = Contrato_DAO(session)
+
+    def mostrar_Botoes(self):
+        self.label.show()
+        self.label.move(self.tabWidget.width() + 44,self.label.y())
+        self.Mes.show()
+        self.Mes.move(self.tabWidget.width() + 13,self.Mes.y())
+        self.Gerar_recibo.show()
+        self.Gerar_recibo.move(self.tabWidget.width() + 23,self.Gerar_recibo.y())
+        self.resize(self.Mes.x() + 118,self.height())
+    
+    def esconder_Botoes(self):
+        self.label.hide()
+        self.Mes.hide()
+        self.Gerar_recibo.hide()
+
+    def recibo(self):
+        h = self.tabelaContrato.selectionModel()
+        index = h.currentIndex() 
+        linha = self.model.takeRow(index.row())
+        self.model.insertRow(index.row(),linha)
+        dicio = {
+            'Nome' : linha[0].text(),
+            'Casa' : linha[1].text(),
+            'Aluguel' : linha[2].text(),
+            'Ativo' : linha[3].text(),
+            'data vencimento' : linha[4].text()
+        }
+        print(dicio)
+

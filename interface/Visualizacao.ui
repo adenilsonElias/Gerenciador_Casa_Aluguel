@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>456</width>
-    <height>302</height>
+    <width>548</width>
+    <height>540</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>0</x>
      <y>0</y>
      <width>421</width>
-     <height>301</height>
+     <height>531</height>
     </rect>
    </property>
    <property name="currentIndex">
@@ -38,7 +38,7 @@
        <x>-2</x>
        <y>-2</y>
        <width>417</width>
-       <height>270</height>
+       <height>501</height>
       </rect>
      </property>
     </widget>
@@ -53,7 +53,7 @@
        <x>-2</x>
        <y>-2</y>
        <width>421</width>
-       <height>270</height>
+       <height>501</height>
       </rect>
      </property>
     </widget>
@@ -68,11 +68,53 @@
        <x>-2</x>
        <y>-2</y>
        <width>417</width>
-       <height>271</height>
+       <height>501</height>
       </rect>
      </property>
     </widget>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="Gerar_recibo">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>110</y>
+     <width>88</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>gerar recibo</string>
+   </property>
+  </widget>
+  <widget class="QDateEdit" name="Mes">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>70</y>
+     <width>110</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="displayFormat">
+    <string>MM</string>
+   </property>
+   <property name="calendarPopup">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>465</x>
+     <y>40</y>
+     <width>31</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Mês</string>
+   </property>
   </widget>
  </widget>
  <resources/>
