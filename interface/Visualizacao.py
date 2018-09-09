@@ -136,12 +136,15 @@ class visualizacao(QWidget):
         index = h.currentIndex() 
         linha = self.model.takeRow(index.row())
         self.model.insertRow(index.row(),linha)
-        dicio = {
-            'Nome' : linha[0].text(),
-            'Casa' : linha[1].text(),
-            'Aluguel' : linha[2].text(),
-            'Ativo' : linha[3].text(),
-            'data vencimento' : linha[4].text()
-        }
-        print(dicio)
+        if len(linha) > 0:
+            dicio = {
+                'Nome' : linha[0].text(),
+                'Casa' : linha[1].text(),
+                'Aluguel' : linha[2].text(),
+                'Ativo' : linha[3].text(),
+                'data vencimento' : linha[4].text()
+            }
+            print(dicio)
+        else:
+            print("Não houve nenhuma seleçao")
 
