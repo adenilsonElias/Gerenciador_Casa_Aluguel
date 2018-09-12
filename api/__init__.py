@@ -11,7 +11,7 @@ from api import Contrato_DAO, Casa_DAO, Inquilino_DAO, make_connection, make_eng
 """
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from api.models import Casa, Instalacao_Eletrica, Inquilino, Contrato
+from api.models import Casa, Instalacao_Eletrica, Inquilino, Contrato, Pagamento
 import config
 # from config import URL
 
@@ -224,3 +224,31 @@ class Contrato_DAO(DAO):
         return c
     def todos_contratos(self):
         return [x for x in self.session.query(Contrato).all()]
+
+class PagamentoDAO(DAO):
+
+    def realiza_pagamento(self, id_contrato=None, dt_pag=None, dt_venc=None, deposito=False):
+        if id_contrato is None:
+            raise Exception("Necessário prover um contrato")
+        if dt_venc is None:
+            raise Exception("Necessário prover uma data de vencimento")
+        if dt_pag is None:
+            raise Exception("Necessário prover uma data de pagamento")
+        
+        p = Pagamento()
+        p.deposito = deposito
+        p.dt_pag = dt_pag
+        p.dt_venc = dt_venc
+        p.id_contrato = id_contrato
+
+        self.session.add(p)
+        self.session.commit()
+
+        return p
+
+    def todos_pagamentos(self):
+        return [x for x in self.session.query(Pagamento).all()]
+    
+    def todos_pagamentos_contrato(self, id_contrato):
+        return [x for x in self.session.query(Pagamento).filter(Pagamento.id_contrato == id_contrato)]
+    
