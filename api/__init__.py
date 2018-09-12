@@ -199,9 +199,6 @@ class Contrato_DAO(DAO):
         
         ```
         """
-        if None in [valor, ativo, venc, casa, inq]:
-            raise Exception("Campos Obrigatórios Faltantes")
-            # TODO: separar raises
         if valor is None:
             raise Exception("Necessário prover um valor de aluguel para o contrato")
         if venc is None:
