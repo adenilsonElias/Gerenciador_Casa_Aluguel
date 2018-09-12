@@ -42,7 +42,6 @@ class Pagamento(Base):
     dt_venc = Column(Date, nullable=False)
     dt_pag = Column(Date)
     deposito = Column(Boolean, nullable=False)
-    id_inq = Column(Integer, ForeignKey('inquilino.id_inq'))
     id_contrato = Column(Integer, ForeignKey(
         'contrato.id_contrato'), nullable=False)
 
