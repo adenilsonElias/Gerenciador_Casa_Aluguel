@@ -29,5 +29,5 @@ def gera_recibo(nome, dia, mes, ano, valor):
         'mes': meses[mes],
         'ano': ano,
     })
-    print(html)
+    # print(html)
     HTML(string=html).write_pdf('recibos/{}-{}.pdf'.format(nome.replace(' ', '_'), meses[mes]))
