@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h3>RECIBO DE ALUGUEL</h3>
+
+    <span>R$ {{ "%02.2f" % valor }}</span>
+
+<p>Recebi(emos) do(s) sr.(a) {{ nome }} a importância de R$ {{ "%02.2f" % valor }} <!-- TODO valor por extenso) --> referente a o mês de {{ mes }}.</p>
+<p>Endereço: Rua alcides mendes barros, n 29 jardim leopoldina, Carapicuiba, SP.</p>
+<p>Emitente: joana martins .</p>
+<p>Data {{ dia }} de {{ mes }} de {{ ano }}.</p>
+<br>
+<br>
+<hr>
+<span style="display: block; text-align: center">Assinatura</span>
+</body>
+</html>
