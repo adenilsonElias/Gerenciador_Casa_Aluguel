@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5 import QtGui,QtCore
 from PyQt5.uic import loadUi
 from api import *
+from api.recibos import gera_recibo
 
 class visualizacao(QWidget):
     def __init__(self):
@@ -56,7 +57,7 @@ class visualizacao(QWidget):
         for i in contratos:
             info_casa = [x.nome_casa for x in casas if x.id_casa == i.id_casa]
             info_inqui = [x.nome_inq for x in inquilinos if x.id_inq == i.id_inq]
-            info = [str(info_inqui[0]),str(info_casa[0]),str(float(i.valor)),str(i.ativo),str(i.venc_contrato)]
+            info = [str(info_inqui[0]),str(info_casa[0]),str(float(i.valor)),str(i.ativo),str(i.venc_contrato).split("-")[2]]
             capsula = []
             for j in info:
                 item = QtGui.QStandardItem(j)
@@ -142,9 +143,11 @@ class visualizacao(QWidget):
                 'Casa' : linha[1].text(),
                 'Aluguel' : linha[2].text(),
                 'Ativo' : linha[3].text(),
-                'data vencimento' : linha[4].text()
+                'data vencimento' : linha[4].text(),
+                'mes/ano' : self.Mes.text()
             }
-            print(dicio)
+            gera_recibo(linha[0].text(),linha[4].text(),int(self.Mes.text().split("/")[0]),
+                        self.Mes.text().split("/")[1],float(linha[2].text()))
         else:
             print("Não houve nenhuma seleçao")
 

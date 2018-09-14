@@ -20,20 +20,11 @@ class interagir_Inquilino(QWidget):
 
         atençao: salvando as informaçoes sem alterar o aluguem padrao
         '''
-        info = { # list apenas para testes 
-            "nome": self.campo_nome.text(),
-            "CPF" : self.campo_CPF.text(),
-            "RG"  : self.campo_RG.text(),
-            "casa": self.comboBox_casa.currentText(),
-            "vencimento": self.vencimento.text(),
-            "inicio_contrato": self.inicio_do_contrato.text(),
-            "novo_aluguel": self.Novo_aluguel.text()
-        }
-
         ########
         engine = make_engine()
         session = make_connection(engine)
         inq = Inquilino_DAO(session)
+
         inq.adiciona_inquilino(cpf=self.campo_CPF.text(),
                                 nome=self.campo_nome.text(),
                                 rg=self.campo_RG.text(),)
@@ -44,7 +35,6 @@ class interagir_Inquilino(QWidget):
         print(type(id_casa))
         self.contrato(id_casa[0],self.campo_CPF.text(),session,inq.todos_inquilinos(),valor[0])
         ##########
-        print(info)
         self.cancelar()
     
     def novo_aluguel(self):
@@ -87,8 +77,9 @@ class interagir_Inquilino(QWidget):
         # objInq = inquilino.DAO(session)
         inqui = [x  for x in objInq if x.cpf_inq == cpf]
         contrato = Contrato_DAO(session)
-        data = datetime.strptime(self.vencimento.text(), '%d/%m/%Y')
+        data = datetime.strptime(self.vencimento.text(), '%d')
         contrato.adiciona_contrato(ativo=True,venc=data,
                                     casa=id_casa,inq=inqui[0],valor=valor)
+    
 
         

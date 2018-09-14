@@ -69,15 +69,6 @@ class interagir_casa(QWidget):
             self.setFixedSize(self.width(), self.botao_concluir.y() + 40)
 
     def pegarItens(self):
-        info = { # list apenas para teste
-            "nome casa": self.campo_nomeDaCasa.text(),
-            "aluguel": self.campo_valorDoAluguel.text(),
-            "agua inclusa": self.checkBox_aguaInclusa.checkState(),
-            "luz inclusa": self.checkBox_luzinclusa.checkState(),
-            "RGI": self.RGI.text(),
-            "instalacao": self.campo_numero_instalacao.text(),
-            "cpf": self.CPF_titular.text()
-        }
         engine = make_engine()
         session = make_connection(engine)
         casas = Casa_DAO(session)
@@ -89,7 +80,6 @@ class interagir_casa(QWidget):
         casas.adiciona_casa(nome=self.campo_nomeDaCasa.text(),
                             valor_aluguel=self.campo_valorDoAluguel.text(),
                             agua=self.RGI.text(),instalacao_eletrica=instalacao)         
-        print(info)
         self.sair()
 
 
