@@ -1,0 +1,5 @@
+alembic==1.0.0
+Jinja2==2.10
+PyQt5-sip==4.19.12
+SQLAlchemy==1.2.11
+WeasyPrint==0.42.3
