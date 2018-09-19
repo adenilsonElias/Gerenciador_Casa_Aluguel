@@ -51,7 +51,10 @@ class Contrato(Base):
     id_contrato = Column(Integer, primary_key=True, nullable=False)
     valor = Column(DECIMAL, nullable=False)
     ativo = Column(Boolean, nullable=False)
-    venc_contrato = Column(Date, nullable=False)
+    # venc_contrato = Column(Date, nullable=False)
+
+    dt_fim_contrato = Column(Date, nullable=False)
+    dia_venc_aluguel = Column(Integer, nullable=False)
     id_casa = Column(Integer, ForeignKey('casa.id_casa'), nullable=False)
     id_inq = Column(Integer, ForeignKey('inquilino.id_inq'), nullable=False)
     # id_pag = Column(Integer, ForeignKey('pagamento.id_pag'), )
