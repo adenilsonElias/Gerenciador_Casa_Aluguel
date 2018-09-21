@@ -2,203 +2,166 @@
 API do Gerenciador de Casas de Aluguel
 ======================================
 
-Import:
-
-```python
-from api import Contrato_DAO, Casa_DAO, Inquilino_DAO, make_connection, make_engine, models
-```
-
 """
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from api.models import Casa, Instalacao_Eletrica, Inquilino, Contrato, Pagamento
+# https://www.pythoncentral.io/introduction-to-sqlite-in-python/
+
+import sqlite3
+
 import config
-# from config import URL
 
 
-def make_engine():
-    """
-    Devolve a engine do banco de dados de acordo com a configuração do projeto
-    """
-    return create_engine(config.DATABASE_URL)
+def make_connection():
 
-
-def make_connection(engine):
-    """
-    Devolve a sessão de acesso a engine do BD
-    """
-    if engine is None:
-        raise Exception("Necessário prover uma conexão")
-    Session = sessionmaker()
-    Session.configure(bind=engine)
-    return Session()
+    return sqlite3.connect(config.DATABASE_URL)
 
 
 class DAO():
-    """
-    Classe Modelo de Data Access Object
-    """
 
-    def __init__(self, session):
-        """
-        TODO
-        """
-        self.session = session
+
+    def __init__(self, conn):
+
+        self.conn = conn
 
 
 class Casa_DAO(DAO):
-    """
-    Classe de Acesso de dados das Casas
 
-    Usage
-    -----
-    ```python
-    casas = Casa_DAO(session)
-    ```
-    """
 
-    def adiciona_casa(self, id=None, nome=None, valor_aluguel=None,
-                      agua=None, instalacao_eletrica=None):
-        """
-        Usage:
-        ```python
-        casa = casas.adiciona_casa(nome=..., valor_aluguel=..., 
-                                   [id=..., agua=..., instalacao_eletrica=...])
-        )
-        ```
-        """
+    def adiciona_casa(self, nome=None, valor_aluguel=None, agua=None,
+                      instalacao_eletrica=None, commit=False, rollback=False):
         if nome is None:
             raise Exception("Necessário prover nome.")
         if valor_aluguel is None:
             raise Exception("Necessário prover um valor para o aluguel.")
 
-        casa = Casa()
-        casa.id_casa = id
-        casa.nome_casa = nome
-        casa.valor_aluguel_casa = valor_aluguel
-        casa.agua_casa = agua
-        if instalacao_eletrica is not None:
-            casa.num_instalacao_eletrica = instalacao_eletrica.num_instalacao
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("""
+                INSERT INTO
+                casa(nome_casa, valor_aluguel_casa, agua_casa, num_instalacao)
+                VALUES
+                (?,?,?,?)
+            """, (nome, valor_aluguel, agua, instalacao_eletrica))
+            if commit:
+                self.conn.commit()
+            return {
+                'id_casa': cursor.lastrowid,
+                'nome_casa': nome,
+                'valor_aluguel': valor_aluguel,
+                'agua_casa': agua,
+                'num_instalacao_eletrica': instalacao_eletrica
+            }
+        except sqlite3.Error as e:
+            if rollback: 
+                self.conn.rollback()
+            return None
 
-        self.session.add(casa)
-        self.session.commit()
-
-        return casa
 
     def todas_casas(self):
-        return [x for x in self.session.query(Casa).all()]
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT * FROM casa;
+        """)
+        casas = cursor.fetchall()
+
+        return [{
+            'id_casa': x[0],
+            'nome_casa': x[1],
+            'valor_aluguel': x[2],
+            'agua_casa': x[3],
+            'num_instalacao_eletrica': x[4]
+        } for x in casas]
 
 
 class Instalacao_Eletrica_DAO(DAO):
-    """
-    Classe de Acesso de dados das Instalações Eletricas
 
-    Usage
-    -----
-    ```python
-    instalacoes = Instalacao_Eletrica_DAO(session)
-    ```
-    """
-
-    def adiciona_instalacao_eletrica(self, num_instalacao=None, cpf=None):
-        """
-        Usage:
-        ```python
-        instalacao = instalacoes.adiciona_instalacao_eletrica(
-            num_instalacao= ... ,
-            cpf= ... 
-        )
-        
-        ```
-        """
+    def adiciona_instalacao_eletrica(self, num_instalacao=None, cpf=None, commit=False, rollback=False):
 
         if num_instalacao is None:
             raise Exception("Necessário prover um número de instalação")
         if cpf is None:
             raise Exception("Necessário prover um número de CPF")
-        instalacao = Instalacao_Eletrica()
-        instalacao.num_instalacao = num_instalacao
-        instalacao.cpf_titular = cpf
-
-        self.session.add(instalacao)
-        self.session.commit()
-
-        return instalacao
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("""
+                INSERT INTO
+                instalacao_eletrica
+                VALUES
+                (?, ?)
+            """, (num_instalacao, cpf))
+            if commit:
+                self.conn.commit()
+            return {
+                'num_instalacao': num_instalacao, 
+                'cpf_titular': cpf
+            }
+        except sqlite3.Error as e:
+            # e
+            if rollback:
+                self.conn.rollback()
+            return None
     
     def todas_instalacoes(self):
-        return [x for x in self.session.query(Instalacao_Eletrica).all()]
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT * FROM instalacao_eletrica;
+        """)
+        instalcoes = cursor.fetchall()
 
-
+        return [{
+            'num_instalacao': x[0],
+            'cpf_titular': x[1]
+        } for x in instalacoes]
 
 class Inquilino_DAO(DAO):
-    """
-    Classe de Acesso de dados dos Inquilinos
 
-    Usage
-    -----
-    ```python
-    inquilinos = Inquilinos_DAO(session)
-    ```
-    """
-
-    def adiciona_inquilino(self, id=None, cpf=None, nome=None, rg=None):
-        """
-        Usage:
-        ```python
-        inq = inquilinos.adiciona_inquilino(
-            cpf= ... ,
-            nome= ... ,
-            rg= ... ,
-            [id= ... ]
-        )
-        
-        ```
-        """
+    def adiciona_inquilino(self, cpf=None, nome=None,
+                           rg=None, commit=False, rollback=False):
         if cpf is None:
             raise Exception("Necessário prover um número de CPF")
         if nome is None:
             raise Exception("Necessário prover um Nome")
-        inq = Inquilino()
-        inq.id_inq = id
-        inq.nome_inq = nome
-        inq.cpf_inq = cpf
-        inq.rg_inq = rg
+        if rg is None:
+            raise Exception("Necessário prover um RG")
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("""
+                INSERT INTO
+                inquilino(cpf_inq, nome_inq, rg_inq)
+                VALUES
+                (?, ?, ?)
+            """, (cpf, nome, rg))
+            if commit:
+                self.conn.commit()
+            return {
+                'id_inq': cursor.lastrowid,
+                'cpf_inq': cpf,
+                'nome_inq': nome,
+                'rg_inq': rg
+            }
+        except sqlite3.Error as e:
+            if rollback:
+                self.conn.rollback()
+            return None 
 
-        self.session.add(inq)
-        self.session.commit()
-
-        return inq
     def todos_inquilinos(self):
-        return [x for x in self.session.query(Inquilino).all()]
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT * FROM inquilino;
+        """)
+        inquilinos = cursor.fetchall()
+        return [{
+            'id_inq': x[0],
+            'cpf_inq': x[1],
+            'nome_inq': x[2],
+            'rg_inq': x[3]
+        } for x in inquilinos]
 
 
 class Contrato_DAO(DAO):
-    """
-    Classe de Acesso de dados dos Contratos
 
-    Usage
-    -----
-    ```python
-    contratod = Contratos_DAO(session)
-    ```
-    """
-
-    def adiciona_contrato(self, id=None, valor=None, ativo=True,
-                          venc=None, casa=None, inq=None):
-        """
-        Usage:
-        ```python
-        contrato = contratos.adiciona_contrato(
-            valor= ... ,
-            ativo= ... ,
-            venc= ...,
-            casa= ...,
-            inq= ...,
-            [id= ... ,]
-        )
-        
-        ```
-        """
+    def adiciona_contrato(self, valor=None, ativo=True, dia_vencimento=None,
+                          fim_contrato=None, casa=None, inq=None,
+                          commit=False, rollback=False):
         if valor is None:
             raise Exception("Necessário prover um valor de aluguel para o contrato")
         if venc is None:
@@ -207,45 +170,144 @@ class Contrato_DAO(DAO):
             raise Exception("Necessário escolher uma casa")
         if inq is None:
             raise Exception("Necessário escolher um inquilino")
-        c = Contrato()
-        c.id_contrato = id
-        c.valor = valor
-        c.ativo = ativo
-        c.venc_contrato = venc
-        c.id_casa = casa.id_casa
-        c.id_inq = inq.id_inq
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("""
+                INSERT INTO
+                contrato(valor, ativo, dt_fim_contrato, dia_venc_aluguel, id_casa, id_inq)
+                VALUES
+                (?,?,?,?,?,?)
+            """, (valor, ativo, venc, casa, inq))
+            if commit:
+                self.conn.commit()
+            return {
+                'id_contrato': cursor.lastrowid,
+                'valor': valor,
+                'ativo': ativo,
+                'dt_fim_contrato': fim_contrato,
+                'dia_venc_aluguel': dia_vencimento,
+                'id_casa': casa,
+                'id_inq': inq
+            }
+        except sqlite3.Error as e:
+            if rollback:
+                self.conn.rollback()
+            return None
 
-        self.session.add(c)
-        self.session.commit()
-
-        return c
     def todos_contratos(self):
-        return [x for x in self.session.query(Contrato).all()]
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT * FROM contrato;
+        """)
+        contratos = cursor.fetchall()
+        return [{
+            'id_inq': x[0],
+            'cpf_inq': x[1],
+            'nome_inq': x[2],
+            'rg_inq': x[3]
+        } for x in contratos]
 
 class PagamentoDAO(DAO):
 
-    def realiza_pagamento(self, id_contrato=None, dt_pag=None, dt_venc=None, deposito=False):
+    def realiza_pagamento(self, id_contrato=None, dt_pag=None, dt_venc=None, deposito=False, commit=False, rollback=False):
+
         if id_contrato is None:
             raise Exception("Necessário prover um contrato")
         if dt_venc is None:
             raise Exception("Necessário prover uma data de vencimento")
         if dt_pag is None:
             raise Exception("Necessário prover uma data de pagamento")
-        
-        p = Pagamento()
-        p.deposito = deposito
-        p.dt_pag = dt_pag
-        p.dt_venc = dt_venc
-        p.id_contrato = id_contrato
-
-        self.session.add(p)
-        self.session.commit()
-
-        return p
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("""
+                INSERT INTO
+                pagamento(dt_venc, dt_pag, deposito, id_contrato)
+                VALUES
+                (?, ?, ?, ?)
+            """, (dt_venc, dt_pag, deposito, id_contrato))
+            if commit:
+                self.conn.commit()
+            return {
+                'id_pag': cursor.lastrowid ,
+                'dt_venc': dt_venc ,
+                'dt_pag': dt_pag ,
+                'deposito': deposito ,
+                'id_contrato': id_contrato
+            }
+        except sqlite3.Error as e:
+            if rollback:
+                self.conn.rollback()
+            return None
 
     def todos_pagamentos(self):
-        return [x for x in self.session.query(Pagamento).all()]
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT * FROM pagamento;
+        """)
+        pagamentos = cursor.fetchall()
+        return [{
+            'id_pag': x[0] ,
+            'dt_venc': x[1] ,
+            'dt_pag': x[2] ,
+            'deposito': x[3] ,
+            'id_contrato': x[4]
+        } for x in pagamentos]
     
     def todos_pagamentos_contrato(self, id_contrato):
-        return [x for x in self.session.query(Pagamento).filter(Pagamento.id_contrato == id_contrato)]
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT * FROM pagamento
+            WHERE pagamento.id_contrato = ?;
+        """, (id_contrato))
+        pagamentos = cursor.fetchall()
+        return [{
+            'id_pag': x[0] ,
+            'dt_venc': x[1] ,
+            'dt_pag': x[2] ,
+            'deposito': x[3] ,
+            'id_contrato': x[4]
+        } for x in pagamentos]
     
+def start_db(conn):
+    cursor = conn.cursor()
+    cursor.executescript("""
+        CREATE TABLE IF NOT EXISTS instalacao_eletrica (
+            num_instalacao VARCHAR(20) NOT NULL PRIMARY KEY,
+            cpf_titular VARCHAR(11) NOT NULL UNIQUE
+        );
+
+        CREATE TABLE IF NOT EXISTS casa(
+            id_casa INTEGER NOT NULL PRIMARY KEY,
+            nome_casa INTEGER NOT NULL,
+            valor_aluguel_casa INTEGER NOT NULL,
+            agua_casa VARCHAR(10),
+            num_instalacao VARCHAR(11) UNIQUE,
+            FOREIGN KEY (num_instalacao) REFERENCES instalacao_eletrica(num_instalacao)
+        );
+        
+        CREATE TABLE IF NOT EXISTS inquilino(
+            id_inq INTEGER NOT NULL PRIMARY KEY,
+            cpf_inq VARCHAR(11) NOT NULL UNIQUE,
+            nome_inq VARCHAR(40) NOT NULL,
+            rg_inq VARCHAR(10) NOT NULL
+        );
+        
+        CREATE TABLE IF NOT EXISTS contrato(
+            id_contrato INTEGER NOT NULL PRIMARY KEY,
+            valor REAL NOT NULL,
+            ativo INTEGER NOT NULL,
+            dt_fim_contrato DATE NOT NULL,
+            dia_venc_aluguel INTEGER NOT NULL,
+            id_casa INTEGER NOT NULL,
+            id_inq INTEGER NOT NULL
+        );
+        
+        CREATE TABLE IF NOT EXISTS pagamento(
+            id_pag INTEGER NOT NULL PRIMARY KEY,
+            dt_venc VARCHAR(23) NOT NULL,
+            dt_pag VARCHAR(23),
+            deposito INTEGER NOT NULL,
+            id_contrato INTEGER ,
+            FOREIGN KEY (id_contrato) REFERENCES contrato(id_contrato)
+        );
+        """)

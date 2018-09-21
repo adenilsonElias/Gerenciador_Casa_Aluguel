@@ -1,4 +1,4 @@
 
-DATABASE_URL = 'sqlite:///teste.bd'
+DATABASE_URL = 'teste.db'
 
 
