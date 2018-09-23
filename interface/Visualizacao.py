@@ -81,11 +81,11 @@ class visualizacao(QWidget):
             self.carregar_contrato()
             self.mostrar_contrato()
             a = self.tabelaContrato.horizontalHeader()
-            a.stretchLastSection()
+            # a.setStretchLastSection(True)
             self.tabelaContrato.resizeColumnsToContents()
 
-            self.tabelaContrato.resize(a.length()+20,self.height())
-            self.tabWidget.resize(a.length()+25,self.height())
+            # self.tabelaContrato.resize(a.length(),self.height())
+            self.tabWidget.resize(a.length(),self.height())
             self.mostrar_Botoes()
 
         elif self.tabWidget.currentIndex() == 1:
@@ -93,23 +93,30 @@ class visualizacao(QWidget):
             self.carregar_casa()
             self.mostrar_casa()
             a = self.tabelaCasa.horizontalHeader()
-            a.stretchLastSection()
+            # a.setStretchLastSection(True)
             self.tabelaCasa.resizeColumnsToContents()
 
-            self.tabelaCasa.resize(a.length()+20,self.height())
-            self.tabWidget.resize(a.length()+25,self.height())
-            self.resize(a.length()+25,self.height())
+            # self.tabelaCasa.resize(a.length()+10,self.height())
+            self.tabWidget.resize(a.length()+4,self.height())
+            self.resize(a.length()+4,self.height())
 
         elif self.tabWidget.currentIndex() == 2:
             self.esconder_Botoes()
             self.carregar_inq()
             self.mostrar_inq()
             a = self.tabelaInq.horizontalHeader()
-            a.stretchLastSection()
+            print(a.length())
+            a.setStretchLastSection(True)
             self.tabelaInq.resizeColumnsToContents()
-            self.tabelaInq.resize(a.length()+20,self.height())
-            self.tabWidget.resize(a.length()+20,self.height())
-            self.resize(a.length()+20,self.height())
+            if a.length() < 200:
+                a.resize(200,a.height())    
+                
+            print(a.length())
+            print(self.tabelaInq.size())
+            self.tabelaInq.resize(a.length()+4,self.height())
+            self.tabWidget.resize(a.length()+4,self.height())
+            print(self.tabWidget.size())
+            self.resize(a.length()+4,self.height())
     
     def carrega(self):
         engine = make_engine()
