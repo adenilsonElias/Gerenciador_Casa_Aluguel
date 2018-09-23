@@ -97,8 +97,8 @@ class visualizacao(QWidget):
             self.tabelaCasa.resizeColumnsToContents()
 
             # self.tabelaCasa.resize(a.length()+10,self.height())
-            self.tabWidget.resize(a.length()+10,self.height())
-            self.resize(a.length()+10,self.height())
+            self.tabWidget.resize(a.length()+4,self.height())
+            self.resize(a.length()+4,self.height())
 
         elif self.tabWidget.currentIndex() == 2:
             self.esconder_Botoes()
@@ -107,9 +107,9 @@ class visualizacao(QWidget):
             a = self.tabelaInq.horizontalHeader()
             print(a.length())
             a.setStretchLastSection(True)
+            self.tabelaInq.resizeColumnsToContents()
             if a.length() < 200:
                 a.resize(200,a.height())    
-            self.tabelaInq.resizeColumnsToContents()
                 
             print(a.length())
             print(self.tabelaInq.size())
