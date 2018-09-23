@@ -18,22 +18,23 @@ class interagir_Inquilino(QWidget):
         '''
         Pega os intens dos textField e insere no banco
 
-        atençao: salvando as informaçoes sem alterar o aluguem padrao
+        atençao: salvando as informaçoes sem alterar o aluguel padrao
         '''
         ########
-        engine = make_engine()
-        session = make_connection(engine)
+        session = make_connection()
         inq = Inquilino_DAO(session)
 
         inq.adiciona_inquilino(cpf=self.campo_CPF.text(),
-                                nome=self.campo_nome.text(),
-                                rg=self.campo_RG.text(),)
+                               nome=self.campo_nome.text(),
+                               rg=self.campo_RG.text())
         casa = Casa_DAO(session)
         casas = casa.todas_casas()
-        id_casa = [x for x in casas if x.nome_casa == self.comboBox_casa.currentText()]
-        valor = [x.valor_aluguel_casa for x in casas if x.nome_casa == self.comboBox_casa.currentText()]
-        print(type(id_casa))
-        self.contrato(id_casa[0],self.campo_CPF.text(),session,inq.todos_inquilinos(),valor[0])
+        id_casa = [x["id_casa"] for x in casas if x["nome_casa"] == self.comboBox_casa.currentText()]
+        valor = [x["valor_aluguel"] for x in casas if x["nome_casa"] == self.comboBox_casa.currentText()]
+        self.contrato(id_casa[0],
+                      self.campo_CPF.text(),
+                      session,inq.todos_inquilinos(),
+                      valor[0])
         ##########
         self.cancelar()
     
@@ -66,20 +67,26 @@ class interagir_Inquilino(QWidget):
         '''
         Adiciona as casas no no combobox
         '''
-        engine = make_engine()
-        session = make_connection(engine)
+        session = make_connection()
         casa = Casa_DAO(session)
         mostrar_casa = casa.todas_casas()
         for x in mostrar_casa:
-            self.comboBox_casa.addItem(x.nome_casa)
+            self.comboBox_casa.addItem(x["nome_casa"])
     
     def contrato(self,id_casa,cpf,session,objInq,valor):
         # objInq = inquilino.DAO(session)
-        inqui = [x  for x in objInq if x.cpf_inq == cpf]
+        inqui = [x["id_inq"]  for x in objInq if x["cpf_inq"] == cpf]
         contrato = Contrato_DAO(session)
-        data = datetime.strptime(self.vencimento.text(), '%d')
-        contrato.adiciona_contrato(ativo=True,venc=data,
-                                    casa=id_casa,inq=inqui[0],valor=valor)
+        date = datetime.strptime(self.inicio_do_contrato.text(),"%d/%m/%Y")
+        date = date.replace(year=date.year + 1)
+        print(type(date),date)
+        contrato.adiciona_contrato(ativo=True,
+                                    dia_vencimento=int(self.vencimento.text()),
+                                    casa=id_casa,
+                                    inq=inqui[0],
+                                    valor=valor,
+                                    fim_contrato=date,
+                                    commit=True)
     
 
         

@@ -22,7 +22,7 @@ class visualizacao(QWidget):
 
         inquilinos = self.Inquilino.todos_inquilinos()
         for i in inquilinos:
-            info = [i.nome_inq,i.cpf_inq,i.rg_inq]
+            info = [i["nome_inq"],i["cpf_inq"],i["rg_inq"]]
             capsula = []
             for j in info:
                 item = QtGui.QStandardItem(j)
@@ -36,7 +36,7 @@ class visualizacao(QWidget):
 
         casas = self.Casa.todas_casas()
         for i in casas:
-            info = [i.nome_casa,str(float(i.valor_aluguel_casa)),i.agua_casa,"NULL",str(i.num_instalacao_eletrica)]
+            info = [i["nome_casa"],str(float(i["valor_aluguel"])),i["agua_casa"],"NULL",str(i["num_instalacao_eletrica"])]
             capsula = []
             for j in info:
                 item = QtGui.QStandardItem(j)
@@ -55,9 +55,11 @@ class visualizacao(QWidget):
         contratos = self.Contrato.todos_contratos()
 
         for i in contratos:
-            info_casa = [x.nome_casa for x in casas if x.id_casa == i.id_casa]
-            info_inqui = [x.nome_inq for x in inquilinos if x.id_inq == i.id_inq]
-            info = [str(info_inqui[0]),str(info_casa[0]),str(float(i.valor)),str(i.ativo),str(i.venc_contrato).split("-")[2]]
+            print(casas)
+            print(contratos)
+            info_casa = [x["nome_casa"] for x in casas if x['id_casa'] == i['id_casa']]
+            info_inqui = [x["nome_inq"] for x in inquilinos if x["id_inq"] == i["id_inq"]]
+            info = [str(info_inqui[0]),str(info_casa[0]),str(float(i["valor"])),str(i["ativo"]),str(i["dia_venc_aluguel"])]
             capsula = []
             for j in info:
                 item = QtGui.QStandardItem(j)
@@ -119,8 +121,7 @@ class visualizacao(QWidget):
             self.resize(a.length()+4,self.height())
     
     def carrega(self):
-        engine = make_engine()
-        session = make_connection(engine)
+        session = make_connection()
         self.Casa = Casa_DAO(session)
         self.Inquilino = Inquilino_DAO(session)
         self.Contrato = Contrato_DAO(session)

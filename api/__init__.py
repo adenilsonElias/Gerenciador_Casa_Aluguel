@@ -164,7 +164,7 @@ class Contrato_DAO(DAO):
                           commit=False, rollback=False):
         if valor is None:
             raise Exception("Necessário prover um valor de aluguel para o contrato")
-        if venc is None:
+        if dia_vencimento is None:
             raise Exception("Necessário prover uma data de vencimento")
         if casa is None:
             raise Exception("Necessário escolher uma casa")
@@ -172,12 +172,13 @@ class Contrato_DAO(DAO):
             raise Exception("Necessário escolher um inquilino")
         try:
             cursor = self.conn.cursor()
+            print(type(inq))
             cursor.execute("""
                 INSERT INTO
                 contrato(valor, ativo, dt_fim_contrato, dia_venc_aluguel, id_casa, id_inq)
                 VALUES
                 (?,?,?,?,?,?)
-            """, (valor, ativo, venc, casa, inq))
+            """, (valor, ativo,fim_contrato, dia_vencimento, casa, inq))
             if commit:
                 self.conn.commit()
             return {
@@ -188,7 +189,7 @@ class Contrato_DAO(DAO):
                 'dia_venc_aluguel': dia_vencimento,
                 'id_casa': casa,
                 'id_inq': inq
-            }
+                }
         except sqlite3.Error as e:
             if rollback:
                 self.conn.rollback()
@@ -201,10 +202,14 @@ class Contrato_DAO(DAO):
         """)
         contratos = cursor.fetchall()
         return [{
-            'id_inq': x[0],
-            'cpf_inq': x[1],
-            'nome_inq': x[2],
-            'rg_inq': x[3]
+            'id_contrato': x[0],
+            'valor': x[1],
+            'ativo': x[2],
+            'dt_fim_contrato': x[3],
+            'dia_venc_aluguel': x[4],
+            'id_casa': x[5],
+            'id_inq': x[6]
+
         } for x in contratos]
 
 class PagamentoDAO(DAO):

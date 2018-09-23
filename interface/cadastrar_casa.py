@@ -69,17 +69,16 @@ class interagir_casa(QWidget):
             self.setFixedSize(self.width(), self.botao_concluir.y() + 40)
 
     def pegarItens(self):
-        engine = make_engine()
-        session = make_connection(engine)
-        casas = Casa_DAO(session)
+        conn = make_connection()
+        casas = Casa_DAO(conn)
         instalacao = None
         if self.checkBox_luzinclusa.checkState() == 2:
-            ins = Instalacao_Eletrica_DAO(session)
+            ins = Instalacao_Eletrica_DAO(conn)
             instalacao = ins.adiciona_instalacao_eletrica(num_instalacao=self.campo_numero_instalacao.text(),
                                             cpf=self.CPF_titular.text())
         casas.adiciona_casa(nome=self.campo_nomeDaCasa.text(),
                             valor_aluguel=self.campo_valorDoAluguel.text(),
-                            agua=self.RGI.text(),instalacao_eletrica=instalacao)         
+                            agua=self.RGI.text(),instalacao_eletrica=instalacao,commit=True)         
         self.sair()
 
 
