@@ -17,6 +17,11 @@ class visualizacao(QWidget):
         self.show()
     
     def carregar_inq(self):
+        """
+        CONTROL
+        função responsavel por criar os model do QT para inquilino
+        """
+
         self.model = QtGui.QStandardItemModel()
         self.model.setHorizontalHeaderLabels(["Nome","CPF","RG"])
 
@@ -31,6 +36,10 @@ class visualizacao(QWidget):
             self.model.appendRow(capsula)
         
     def carregar_casa(self):
+        """
+        CONTROL
+        função responsavel por criar os model do QT para casa
+        """
         self.model = QtGui.QStandardItemModel()
         self.model.setHorizontalHeaderLabels(["Nome","Valor Aluguel","RGI","CPF","numero estalacao"])
 
@@ -46,6 +55,10 @@ class visualizacao(QWidget):
             self.model.appendRow(capsula)
     
     def carregar_contrato(self):
+        """
+        CONTROL
+        função responsavel por criar os model do QT para contrato
+        """
         self.model = QtGui.QStandardItemModel()
         self.model.setHorizontalHeaderLabels(["Inquilino","Casa","Valor","Ativo","vencimento"])
         
@@ -69,15 +82,27 @@ class visualizacao(QWidget):
             self.model.appendRow(capsula)
 
     def mostrar_inq(self):
+        """
+        VIEW
+        """
         self.tabelaInq.setModel(self.model)
     
     def mostrar_casa(self):
+        """
+        VIEW
+        """
         self.tabelaCasa.setModel(self.model)
     
     def mostrar_contrato(self):
+        """
+        VIEW
+        """
         self.tabelaContrato.setModel(self.model)
 
     def atualizar(self):
+        """
+        VIEW responsavel pelas mudanças de abas 
+        """
         if self.tabWidget.currentIndex() == 0:
             self.mostrar_Botoes()
             self.carregar_contrato()
@@ -107,26 +132,28 @@ class visualizacao(QWidget):
             self.carregar_inq()
             self.mostrar_inq()
             a = self.tabelaInq.horizontalHeader()
-            print(a.length())
             a.setStretchLastSection(True)
             self.tabelaInq.resizeColumnsToContents()
             if a.length() < 200:
                 a.resize(200,a.height())    
                 
-            print(a.length())
-            print(self.tabelaInq.size())
             self.tabelaInq.resize(a.length()+4,self.height())
             self.tabWidget.resize(a.length()+4,self.height())
-            print(self.tabWidget.size())
             self.resize(a.length()+4,self.height())
     
     def carrega(self):
+        """
+        CONTROL
+        """
         session = make_connection()
         self.Casa = Casa_DAO(session)
         self.Inquilino = Inquilino_DAO(session)
         self.Contrato = Contrato_DAO(session)
 
     def mostrar_Botoes(self):
+        """
+        VIEW
+        """
         self.label.show()
         self.label.move(self.tabWidget.width() + 44,self.label.y())
         self.Mes.show()
@@ -136,11 +163,17 @@ class visualizacao(QWidget):
         self.resize(self.Mes.x() + 118,self.height())
     
     def esconder_Botoes(self):
+        """
+        VIEW
+        """
         self.label.hide()
         self.Mes.hide()
         self.Gerar_recibo.hide()
 
     def recibo(self):
+        """
+        CONTROL pega o item selecionado e manda as informaçoes para gerar o recibo.pdf
+        """
         h = self.tabelaContrato.selectionModel()
         index = h.currentIndex() 
         linha = self.model.takeRow(index.row())

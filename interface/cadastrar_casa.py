@@ -17,11 +17,17 @@ class interagir_casa(QWidget):
         self.show()
 
     def sair(self):
+        """
+        VIEW
+        """
         self.setParent(None)
         self.hide()
         self.close()
 
     def mostrar_RGI(self):
+        """
+        VIEW
+        """
 
         if self.checkBox_aguaInclusa.checkState() == 2:
             self.label_5.show()
@@ -37,6 +43,9 @@ class interagir_casa(QWidget):
             self.mostrar_instalacao()
 
     def mostrar_instalacao(self):
+        """
+        VIEW - responsavel por mostrar os itens da parte instalação eletrica
+        """
         if self.checkBox_luzinclusa.checkState() == 2:
             self.label_4.show()
             self.label_4.move(self.label_4.x(),
@@ -68,7 +77,11 @@ class interagir_casa(QWidget):
             self.resize(self.width(), self.botao_concluir.y() + 40)
             self.setFixedSize(self.width(), self.botao_concluir.y() + 40)
 
+
     def pegarItens(self):
+        """
+        CONTROL pega os itens do views e manda para as apis DAO
+        """
         conn = make_connection()
         casas = Casa_DAO(conn)
         instalacao = None

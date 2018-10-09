@@ -5,6 +5,9 @@ from cadastrar_inquilino import interagir_Inquilino
 from Visualizacao import visualizacao
 
 class interagir_menu(QWidget):
+    """
+    PROVISORIO
+    """
     def __init__(self):
         super().__init__()
         self.ui = self

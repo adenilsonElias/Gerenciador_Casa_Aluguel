@@ -16,6 +16,7 @@ class interagir_Inquilino(QWidget):
 
     def pegarItens(self):
         '''
+        VIEW
         Pega os intens dos textField e insere no banco
 
         atençao: salvando as informaçoes sem alterar o aluguel padrao
@@ -40,6 +41,7 @@ class interagir_Inquilino(QWidget):
     
     def novo_aluguel(self):
         '''
+        VIEW
         Controla os novos elementos na interface
         '''
         if self.tipo_aluguel.checkState() == 0:
@@ -59,12 +61,16 @@ class interagir_Inquilino(QWidget):
             
     
     def cancelar(self):
+        """
+        VIEW
+        """
         self.setParent(None)
         self.update()
         self.close()
     
     def addInList(self):
         '''
+        CONTROL
         Adiciona as casas no no combobox
         '''
         session = make_connection()
@@ -74,6 +80,10 @@ class interagir_Inquilino(QWidget):
             self.comboBox_casa.addItem(x["nome_casa"])
     
     def contrato(self,id_casa,cpf,session,objInq,valor):
+        """
+        CONTROL
+        Passa as informaçoes para gerar o contrato para a api
+        """
         # objInq = inquilino.DAO(session)
         inqui = [x["id_inq"]  for x in objInq if x["cpf_inq"] == cpf]
         contrato = Contrato_DAO(session)
