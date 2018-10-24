@@ -143,18 +143,18 @@ class Inquilino_DAO(DAO):
                 self.conn.rollback()
             return None 
 
-    def todos_inquilinos(self, ativo=False):
+    def todos_inquilinos(self, ativos=False):
         cursor = self.conn.cursor()
-        if ativo:
-            cursor.execute("""
-                SELECT * from inquilino;
-                """)
-        else:
+        if ativos:
             cursor.execute("""
                 SELECT contrato.id_inq, cpf_inq, nome_inq, rg_inq FROM inquilino
                 JOIN contrato ON contrato.id_inq = inquilino.id_inq
                 WHERE ativo;
             """)
+        else:
+            cursor.execute("""
+                SELECT * from inquilino;
+                """)
         inquilinos = cursor.fetchall()
         return [{
             'id_inq': x[0],
@@ -255,6 +255,44 @@ class Contrato_DAO(DAO):
         try:
             cursor = self.conn.cursor()
             cursor.execute(query, (valor, id))
+            if commit:
+                self.conn.commit()
+                
+        except sqlite3.Error as e:
+            if rollback:
+                self.conn.rollback()
+            print(e)
+
+    def inativa_contrato(self, id=None, commit=False, rollback=False):
+        
+        if id is None:
+            raise Exception("Necessário prover um ID")
+
+        query = '''UPDATE contrato
+                SET ativo = 0
+                WHERE id_contrato = ?'''
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(query, (id, ))
+            if commit:
+                self.conn.commit()
+                
+        except sqlite3.Error as e:
+            if rollback:
+                self.conn.rollback()
+            print(e)
+    
+    def ativa_contrato(self, id=None, commit=False, rollback=False):
+        
+        if id is None:
+            raise Exception("Necessário prover um ID")
+
+        query = '''UPDATE contrato
+                SET ativo = 1
+                WHERE id_contrato = ?'''
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(query, (id,))
             if commit:
                 self.conn.commit()
                 
