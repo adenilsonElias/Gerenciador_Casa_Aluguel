@@ -156,6 +156,28 @@ class Inquilino_DAO(DAO):
             'rg_inq': x[3]
         } for x in inquilinos]
 
+    def altera_inquilino(self, id=None, commit=False, rollback=False,
+                         **kwargs):
+        
+        if id is None:
+            raise Exception("Necessário prover um ID")
+        if not len(kwargs):
+            raise Exception("Necessário prover novas informações para o Inquilino")
+
+        query = f'''UPDATE inquilino
+                SET {', '.join([f'{key}_inq = ?' for key in kwargs.keys()])}
+                WHERE id_inq = {id}'''
+        print(query)
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(query, tuple((kwargs[k] for k in kwargs.keys())) + (id))
+            if commit:
+                self.conn.commit()
+        except sqlite3.Error as e:
+            if rollback:
+                self.conn.rollback()
+
+
 
 class Contrato_DAO(DAO):
 
@@ -211,6 +233,28 @@ class Contrato_DAO(DAO):
             'id_inq': x[6]
 
         } for x in contratos]
+
+    def altera_valor_contrato(self, id=None, valor=None, commit=False, rollback=False):
+        
+        if id is None:
+            raise Exception("Necessário prover um ID")
+        if valor is None:
+            raise Exception("Necessário prover um valor")
+
+        query = f'''UPDATE contrato
+                SET valor = ?
+                WHERE id_contrato = ?'''
+        print(query)
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(query, (valor, id))
+            if commit:
+                self.conn.commit()
+                
+        except sqlite3.Error as e:
+            if rollback:
+                self.conn.rollback()
+            print(e)
 
 class PagamentoDAO(DAO):
 

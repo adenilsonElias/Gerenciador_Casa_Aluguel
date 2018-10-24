@@ -65,7 +65,7 @@ class interagir_Inquilino(QWidget):
         VIEW
         """
         self.setParent(None)
-        self.update()
+        self.hide()
         self.close()
     
     def addInList(self):

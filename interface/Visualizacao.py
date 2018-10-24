@@ -101,7 +101,8 @@ class visualizacao(QWidget):
 
     def atualizar(self):
         """
-        VIEW responsavel pelas mudanças de abas 
+        VIEW responsavel pelas mudanças de abas
+        ARRUMAR 
         """
         if self.tabWidget.currentIndex() == 0:
             self.mostrar_Botoes()
