@@ -143,11 +143,18 @@ class Inquilino_DAO(DAO):
                 self.conn.rollback()
             return None 
 
-    def todos_inquilinos(self):
+    def todos_inquilinos(self, ativo=False):
         cursor = self.conn.cursor()
-        cursor.execute("""
-            SELECT * FROM inquilino;
-        """)
+        if ativo:
+            cursor.execute("""
+                SELECT * from inquilino;
+                """)
+        else:
+            cursor.execute("""
+                SELECT contrato.id_inq, cpf_inq, nome_inq, rg_inq FROM inquilino
+                JOIN contrato ON contrato.id_inq = inquilino.id_inq
+                WHERE ativo;
+            """)
         inquilinos = cursor.fetchall()
         return [{
             'id_inq': x[0],
