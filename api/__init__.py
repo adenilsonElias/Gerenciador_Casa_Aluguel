@@ -173,16 +173,17 @@ class Inquilino_DAO(DAO):
 
         query = f'''UPDATE inquilino
                 SET {', '.join([f'{key}_inq = ?' for key in kwargs.keys()])}
-                WHERE id_inq = {id}'''
+                WHERE id_inq = ?'''
         print(query)
         try:
             cursor = self.conn.cursor()
-            cursor.execute(query, tuple((kwargs[k] for k in kwargs.keys())) + (id))
+            cursor.execute(query, tuple((kwargs[k] for k in kwargs.keys())) + tuple([id]))
             if commit:
                 self.conn.commit()
         except sqlite3.Error as e:
             if rollback:
                 self.conn.rollback()
+            print(e)
 
 
 
