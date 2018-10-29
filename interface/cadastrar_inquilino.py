@@ -4,9 +4,10 @@ from api import *
 from datetime import datetime
 
 class interagir_Inquilino(QWidget):
-    def __init__(self):
+    def __init__(self,parente):
         super().__init__()
         self.ui = self
+        self.parente = parente
         loadUi("interface/cadastrar_inquilino.ui",self.ui)
         self.botao_concluir.clicked.connect(self.pegarItens)
         self.botao_cancelar.clicked.connect(self.cancelar)
@@ -66,6 +67,7 @@ class interagir_Inquilino(QWidget):
         """
         self.setParent(None)
         self.hide()
+        self.parente.atualizar()
         self.close()
     
     def addInList(self):

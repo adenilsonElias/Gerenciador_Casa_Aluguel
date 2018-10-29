@@ -3,16 +3,24 @@ from PyQt5 import QtGui,QtCore
 from PyQt5.uic import loadUi
 from api import *
 from api.recibos import gera_recibo
+from cadastrar_casa import interagir_casa
+from cadastrar_inquilino import interagir_Inquilino
+from Alterar_inq import Alterar_inq
 
-class visualizacao(QWidget):
+class Visualizacao(QWidget):
     def __init__(self):
         super().__init__()
         self.ui = self
         loadUi("interface/Visualizacao.ui",self.ui)
-        # print(mouse.windowPos())
+        self.linha = []
         self.carrega()
         self.tabWidget.currentChanged.connect(self.atualizar)
         self.Gerar_recibo.clicked.connect(self.recibo)
+        self.Valor.clicked.connect(self.alterar_valor)
+        self.Add_inquilino.clicked.connect(self.inquilino)
+        self.Add_casa.clicked.connect(self.casa)
+        self.Add_casa.clicked.connect(self.atualizar)
+        self.Alterar_inq.clicked.connect(self.alterar_inq_func)
         self.atualizar()
         self.show()
     
@@ -23,15 +31,17 @@ class visualizacao(QWidget):
         """
 
         self.model = QtGui.QStandardItemModel()
-        self.model.setHorizontalHeaderLabels(["Nome","CPF","RG"])
+        self.model.setHorizontalHeaderLabels(["id","Nome","CPF","RG"])
 
         inquilinos = self.Inquilino.todos_inquilinos()
         for i in inquilinos:
-            info = [i["nome_inq"],i["cpf_inq"],i["rg_inq"]]
+            info = [str(i["id_inq"]),i["nome_inq"],i["cpf_inq"],i["rg_inq"]]
             capsula = []
+            print(info)
             for j in info:
                 item = QtGui.QStandardItem(j)
                 item.setEditable(False)
+                item.setSelectable(False)
                 capsula.append(item)
             self.model.appendRow(capsula)
         
@@ -60,7 +70,7 @@ class visualizacao(QWidget):
         função responsavel por criar os model do QT para contrato
         """
         self.model = QtGui.QStandardItemModel()
-        self.model.setHorizontalHeaderLabels(["Inquilino","Casa","Valor","Ativo","vencimento"])
+        self.model.setHorizontalHeaderLabels(["Id","Inquilino","Casa","Valor","Ativo","vencimento"])
         
 
         casas = self.Casa.todas_casas()
@@ -68,17 +78,17 @@ class visualizacao(QWidget):
         contratos = self.Contrato.todos_contratos()
 
         for i in contratos:
-            print(casas)
-            print(contratos)
             info_casa = [x["nome_casa"] for x in casas if x['id_casa'] == i['id_casa']]
             info_inqui = [x["nome_inq"] for x in inquilinos if x["id_inq"] == i["id_inq"]]
-            info = [str(info_inqui[0]),str(info_casa[0]),str(float(i["valor"])),str(i["ativo"]),str(i["dia_venc_aluguel"])]
+            info = [str(i['id_contrato']),str(info_inqui[0]),str(info_casa[0]),str(float(i["valor"])),str(i["ativo"]),str(i["dia_venc_aluguel"])]
             capsula = []
             for j in info:
                 item = QtGui.QStandardItem(j)
                 item.setEditable(False)
                 item.setSelectable(False)
                 capsula.append(item)
+            if len(capsula) > 0:
+                capsula[0].setEnabled(False)
             self.model.appendRow(capsula)
 
     def mostrar_inq(self):
@@ -105,43 +115,34 @@ class visualizacao(QWidget):
         ARRUMAR 
         """
         if self.tabWidget.currentIndex() == 0:
-            self.mostrar_Botoes()
             self.carregar_contrato()
             self.mostrar_contrato()
+            self.tabelaContrato.selectionModel().currentRowChanged.connect(self.ativa_desativa)
             a = self.tabelaContrato.horizontalHeader()
-            # a.setStretchLastSection(True)
+            a.setStretchLastSection(True)
             self.tabelaContrato.resizeColumnsToContents()
-
-            # self.tabelaContrato.resize(a.length(),self.height())
-            self.tabWidget.resize(a.length(),self.height())
-            self.mostrar_Botoes()
+            ta = self.tabelaContrato.size()
+            a.resize(ta.width(),a.height())
+            self.ativa_desativa()
 
         elif self.tabWidget.currentIndex() == 1:
-            self.esconder_Botoes()
             self.carregar_casa()
             self.mostrar_casa()
             a = self.tabelaCasa.horizontalHeader()
-            # a.setStretchLastSection(True)
+            a.setStretchLastSection(True)
             self.tabelaCasa.resizeColumnsToContents()
-
-            # self.tabelaCasa.resize(a.length()+10,self.height())
-            self.tabWidget.resize(a.length()+4,self.height())
-            self.resize(a.length()+4,self.height())
+            ta = self.tabelaCasa.size()
+            a.resize(ta.width(),a.height())
 
         elif self.tabWidget.currentIndex() == 2:
-            self.esconder_Botoes()
             self.carregar_inq()
             self.mostrar_inq()
             a = self.tabelaInq.horizontalHeader()
             a.setStretchLastSection(True)
             self.tabelaInq.resizeColumnsToContents()
-            if a.length() < 200:
-                a.resize(200,a.height())    
-                
-            self.tabelaInq.resize(a.length()+4,self.height())
-            self.tabWidget.resize(a.length()+4,self.height())
-            self.resize(a.length()+4,self.height())
-    
+            ta = self.tabelaInq.size()
+            a.resize(ta.width(),a.height())
+
     def carrega(self):
         """
         CONTROL
@@ -151,45 +152,111 @@ class visualizacao(QWidget):
         self.Inquilino = Inquilino_DAO(session)
         self.Contrato = Contrato_DAO(session)
 
-    def mostrar_Botoes(self):
-        """
-        VIEW
-        """
-        self.label.show()
-        self.label.move(self.tabWidget.width() + 44,self.label.y())
-        self.Mes.show()
-        self.Mes.move(self.tabWidget.width() + 13,self.Mes.y())
-        self.Gerar_recibo.show()
-        self.Gerar_recibo.move(self.tabWidget.width() + 23,self.Gerar_recibo.y())
-        self.resize(self.Mes.x() + 118,self.height())
-    
-    def esconder_Botoes(self):
-        """
-        VIEW
-        """
-        self.label.hide()
-        self.Mes.hide()
-        self.Gerar_recibo.hide()
-
     def recibo(self):
         """
         CONTROL pega o item selecionado e manda as informaçoes para gerar o recibo.pdf
         """
-        h = self.tabelaContrato.selectionModel()
-        index = h.currentIndex() 
-        linha = self.model.takeRow(index.row())
-        self.model.insertRow(index.row(),linha)
+        linha = self.linha
         if len(linha) > 0:
             dicio = {
-                'Nome' : linha[0].text(),
-                'Casa' : linha[1].text(),
-                'Aluguel' : linha[2].text(),
-                'Ativo' : linha[3].text(),
-                'data vencimento' : linha[4].text(),
+                'Nome' : linha[1].text(),
+                'Casa' : linha[2].text(),
+                'Aluguel' : linha[3].text(),
+                'Ativo' : linha[4].text(),
+                'data vencimento' : linha[5].text(),
                 'mes/ano' : self.Mes.text()
             }
-            gera_recibo(linha[0].text(),linha[4].text(),int(self.Mes.text().split("/")[0]),
-                        self.Mes.text().split("/")[1],float(linha[2].text()))
+            gera_recibo(linha[1].text(),linha[5].text(),int(self.Mes.text().split("/")[0]),
+                        self.Mes.text().split("/")[1],float(linha[3].text()))
         else:
-            print("Não houve nenhuma seleçao")
+            print("errou")
+    def coletaLinha(self,tabela):
+        h = tabela.selectionModel()
+        index = h.currentIndex()
+        linha = self.model.takeRow(index.row())
+        self.model.insertRow(index.row(),linha)
+        return linha
 
+    def ativa_desativa(self):
+        self.tabelaContrato.selectionModel().currentRowChanged.disconnect(self.ativa_desativa)
+        self.linha = self.coletaLinha(self.tabelaContrato)
+        self.tabelaContrato.selectionModel().reset()
+        if (len(self.linha) > 0):
+            self.Idsao.setText(self.linha[0].text())
+            if self.linha[4].text() == "1":
+                self.Gerar_recibo.setEnabled(True)
+                self.At_De.setText("Desativar")
+                self._conectar(self.Desativar_contrato)
+                self._desconectar(self.ativar_contrato)
+                self.New_value.setEnabled(True)
+                self.Valor.setEnabled(True)
+                self.New_value.setText(self.linha[3].text())
+            else:
+                self.Gerar_recibo.setEnabled(False)
+                self.At_De.setText("Ativar")
+                self._conectar(self.ativar_contrato)
+                self._desconectar(self.Desativar_contrato)
+                self.New_value.setEnabled(False)
+                self.Valor.setEnabled(False)
+                self.New_value.setText("")
+            self.At_De.setEnabled(True)
+        else:
+            self.New_value.setEnabled(False)
+            self.Valor.setEnabled(False)
+            self.New_value.setText("")
+            self.Idsao.setText("")
+            self.Gerar_recibo.setEnabled(False)
+            self._desconectar(self.Desativar_contrato)
+            self._desconectar(self.ativar_contrato)
+            self.At_De.setEnabled(False)
+            self.At_De.setText("Ativa/Desativa")
+        self.tabelaContrato.selectionModel().currentRowChanged.connect(self.ativa_desativa)
+
+    def _conectar(self,func):
+        try: # Não questione só aceite
+            self.At_De.clicked.connect(func)
+        except:
+            pass
+
+    def _desconectar(self,func):
+        try: # Não questione só aceite
+            self.At_De.clicked.disconnect(func)
+        except:
+            pass
+
+    def Desativar_contrato(self):
+        linha = self.linha
+        try: # Não questione só aceite
+            self.Contrato.inativa_contrato(id=int(linha[0].text()),commit=True)
+        except:
+            pass
+        self.atualizar()
+    
+    def ativar_contrato(self):
+        linha = self.linha
+        try: # Não questione só aceite
+            self.Contrato.ativa_contrato(id=int(linha[0].text()),commit=True)
+        except:
+            pass
+        self.atualizar()
+    
+    def alterar_valor(self):
+        linha = self.linha
+        try: # Não questione só aceite
+            self.Contrato.altera_valor_contrato(int(linha[0].text()),float(self.New_value.text()),commit=True)
+        except:
+            pass
+        self.atualizar()
+    
+    def inquilino(self):
+        inq = interagir_Inquilino(self)
+        inq.show()
+
+    def casa (self):
+        casa = interagir_casa(self)
+        casa.show()
+
+    def alterar_inq_func(self):
+        info = self.coletaLinha(self.tabelaInq)
+        alter = Alterar_inq(self,info)
+        alter.show()
