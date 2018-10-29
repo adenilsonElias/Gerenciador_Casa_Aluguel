@@ -181,6 +181,7 @@ class Inquilino_DAO(DAO):
             if commit:
                 self.conn.commit()
         except sqlite3.Error as e:
+            print("aloo marilente")
             if rollback:
                 self.conn.rollback()
 

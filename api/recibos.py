@@ -25,7 +25,7 @@ def gera_recibo(nome, dia, mes, ano, valor):
     html = template.render({
         'nome': nome,
         'valor': valor,
-        'dia': 23,
+        'dia': dia,
         'mes': meses[mes],
         'ano': ano,
     })

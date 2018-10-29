@@ -4,8 +4,9 @@ from PyQt5.uic import loadUi
 
 
 class interagir_casa(QWidget):
-    def __init__(self):
+    def __init__(self,parente):
         super().__init__()
+        self.parente = parente
         self.ui = self
         loadUi("interface/cadastrar_casa.ui", self.ui)
         self.mostrar_RGI()
@@ -22,6 +23,7 @@ class interagir_casa(QWidget):
         """
         self.setParent(None)
         self.hide()
+        self.parente.atualizar()
         self.close()
 
     def mostrar_RGI(self):
