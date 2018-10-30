@@ -109,7 +109,7 @@ class Visualizacao(QWidget):
         """
         self.tabelaContrato.setModel(self.model)
 
-    def atualizar(self):
+    def atualizar(self,vai = True):
         """
         VIEW responsavel pelas mudanças de abas
         ARRUMAR 
@@ -123,7 +123,8 @@ class Visualizacao(QWidget):
             self.tabelaContrato.resizeColumnsToContents()
             ta = self.tabelaContrato.size()
             a.resize(ta.width(),a.height())
-            self.ativa_desativa()
+            if vai:
+                self.ativa_desativa()
 
         elif self.tabWidget.currentIndex() == 1:
             self.carregar_casa()
@@ -201,16 +202,19 @@ class Visualizacao(QWidget):
                 self.New_value.setText("")
             self.At_De.setEnabled(True)
         else:
-            self.New_value.setEnabled(False)
-            self.Valor.setEnabled(False)
-            self.New_value.setText("")
-            self.Idsao.setText("")
-            self.Gerar_recibo.setEnabled(False)
-            self._desconectar(self.Desativar_contrato)
-            self._desconectar(self.ativar_contrato)
-            self.At_De.setEnabled(False)
-            self.At_De.setText("Ativa/Desativa")
+            self._disativaBotoes()
         self.tabelaContrato.selectionModel().currentRowChanged.connect(self.ativa_desativa)
+
+    def _disativaBotoes(self):
+        self.New_value.setEnabled(False)
+        self.Valor.setEnabled(False)
+        self.New_value.setText("")
+        self.Idsao.setText("")
+        self.Gerar_recibo.setEnabled(False)
+        self._desconectar(self.Desativar_contrato)
+        self._desconectar(self.ativar_contrato)
+        self.At_De.setEnabled(False)
+        self.At_De.setText("Ativa/Desativa")
 
     def _conectar(self,func):
         try: # Não questione só aceite
@@ -230,7 +234,8 @@ class Visualizacao(QWidget):
             self.Contrato.inativa_contrato(id=int(linha[0].text()),commit=True)
         except:
             pass
-        self.atualizar()
+        self.atualizar(vai=False)
+        self._disativaBotoes()
     
     def ativar_contrato(self):
         linha = self.linha
@@ -238,7 +243,8 @@ class Visualizacao(QWidget):
             self.Contrato.ativa_contrato(id=int(linha[0].text()),commit=True)
         except:
             pass
-        self.atualizar()
+        self.atualizar(vai=False)
+        self._disativaBotoes()
     
     def alterar_valor(self):
         linha = self.linha
@@ -246,7 +252,8 @@ class Visualizacao(QWidget):
             self.Contrato.altera_valor_contrato(int(linha[0].text()),float(self.New_value.text()),commit=True)
         except:
             pass
-        self.atualizar()
+        self.atualizar(vai=False)
+        self._disativaBotoes()
     
     def inquilino(self):
         inq = interagir_Inquilino(self)

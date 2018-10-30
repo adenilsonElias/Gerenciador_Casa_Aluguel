@@ -32,7 +32,7 @@ class Alterar_inq(QWidget):
         nome = self.campo_nome.text()
         cpf = self.campo_CPF.text()
         rg = self.campo_RG.text()
-        self.parente.Inquilino.altera_inquilino(id=tuple(int(self.info[0].text())),
+        self.parente.Inquilino.altera_inquilino(id=int(self.info[0].text()),
                                                 nome=nome,
                                                 rg=rg,
                                                 cpf=cpf,
