@@ -68,7 +68,7 @@ class Casa_DAO(DAO):
             cursor.execute("""
                 SELECT * FROM casa;
             """)
-            
+
         casas = cursor.fetchall()
 
         return [{
@@ -78,6 +78,32 @@ class Casa_DAO(DAO):
             'agua_casa': x[3],
             'num_instalacao_eletrica': x[4]
         } for x in casas]
+
+    def altera_casa(self, id=None, commit=False, rollback=False,
+                         **kwargs):
+        
+        if id is None:
+            raise Exception("Necessário prover um ID")
+        if not len(kwargs):
+            raise Exception("Necessário prover novas informações para o Inquilino")
+
+        query = f'''UPDATE casa
+                SET {', '.join([f"{key}{'_casa' if key != 'num_instalacao' else '' } = ?" for key in kwargs.keys()])}
+                WHERE id_casa = ?'''
+        print(query)
+
+        # return None
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(query, tuple((kwargs[k] for k in kwargs.keys())) + tuple([id]))
+            if commit:
+                self.conn.commit()
+        except sqlite3.Error as e:
+            print("aloo marilente")
+            if rollback:
+                self.conn.rollback()
+            print(e)
+
 
 
 class Instalacao_Eletrica_DAO(DAO):
