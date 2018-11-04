@@ -56,11 +56,19 @@ class Casa_DAO(DAO):
             return None
 
 
-    def todas_casas(self):
+    def todas_casas(self, vazias=False):
         cursor = self.conn.cursor()
-        cursor.execute("""
-            SELECT * FROM casa;
-        """)
+        if vazias:
+            cursor.execute("""
+                SELECT casa.id_casa, nome_casa, valor_aluguel_casa, agua_casa, num_instalacao
+                FROM casa
+                JOIN contrato ON contrato.id_casa = casa.id_casa AND contrato.ativo;
+            """)
+        else:
+            cursor.execute("""
+                SELECT * FROM casa;
+            """)
+            
         casas = cursor.fetchall()
 
         return [{
