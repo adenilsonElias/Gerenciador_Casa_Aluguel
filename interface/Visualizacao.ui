@@ -257,6 +257,32 @@
       <string>Adicionar</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="Alter_casa">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>50</y>
+       <width>111</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Alterar</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="Ativo_Desativo_casa">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>90</y>
+       <width>111</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tabWidgetPage2">
     <attribute name="title">
@@ -317,6 +343,19 @@
      </property>
      <property name="text">
       <string>Alterar</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="Ativo_Desativo">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>90</y>
+       <width>111</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>
