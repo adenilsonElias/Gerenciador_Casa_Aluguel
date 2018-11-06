@@ -21,10 +21,11 @@ class Visualizacao(QWidget):
         self.Add_casa.clicked.connect(self.casa)
         self.Add_casa.clicked.connect(self.atualizar)
         self.Alterar_inq.clicked.connect(self.alterar_inq_func)
-        self.atualizar()
+        self.Ativo_Desativo.clicked.connect(self.inqInativos)
+        self.inqInativos()
         self.show()
     
-    def carregar_inq(self):
+    def carregar_inq(self,ativo=False):
         """
         CONTROL
         função responsavel por criar os model do QT para inquilino
@@ -33,11 +34,13 @@ class Visualizacao(QWidget):
         self.model = QtGui.QStandardItemModel()
         self.model.setHorizontalHeaderLabels(["id","Nome","CPF","RG"])
 
-        inquilinos = self.Inquilino.todos_inquilinos()
+        if ativo:
+            inquilinos = self.Inquilino.todos_inquilinos(True)
+        else:
+            inquilinos = self.Inquilino.todos_inquilinos()
         for i in inquilinos:
             info = [str(i["id_inq"]),i["nome_inq"],i["cpf_inq"],i["rg_inq"]]
             capsula = []
-            print(info)
             for j in info:
                 item = QtGui.QStandardItem(j)
                 item.setEditable(False)
@@ -51,13 +54,16 @@ class Visualizacao(QWidget):
         função responsavel por criar os model do QT para casa
         """
         self.model = QtGui.QStandardItemModel()
-        self.model.setHorizontalHeaderLabels(["Nome","Valor Aluguel","RGI","CPF","numero estalacao"])
+        self.model.setHorizontalHeaderLabels(["id","Nome","Valor Aluguel","RGI","CPF","numero estalacao"])
 
         casas = self.Casa.todas_casas()
         for i in casas:
-            info = [i["nome_casa"],str(float(i["valor_aluguel"])),i["agua_casa"],"NULL",str(i["num_instalacao_eletrica"])]
+            eletrico = i["num_instalacao_eletrica"]
+            info = [str(i["id_casa"]),i["nome_casa"],str(float(i["valor_aluguel"])),i["agua_casa"],"NULL",i["num_instalacao_eletrica"]]
             capsula = []
             for j in info:
+                if j == "":
+                    j = "NULL"
                 item = QtGui.QStandardItem(j)
                 item.setEditable(False)
                 item.setEnabled(True)
@@ -71,7 +77,6 @@ class Visualizacao(QWidget):
         """
         self.model = QtGui.QStandardItemModel()
         self.model.setHorizontalHeaderLabels(["Id","Inquilino","Casa","Valor","Ativo","vencimento"])
-        
 
         casas = self.Casa.todas_casas()
         inquilinos = self.Inquilino.todos_inquilinos()
@@ -109,7 +114,7 @@ class Visualizacao(QWidget):
         """
         self.tabelaContrato.setModel(self.model)
 
-    def atualizar(self,vai = True):
+    def atualizar(self,vai = True,ativo=False):
         """
         VIEW responsavel pelas mudanças de abas
         ARRUMAR 
@@ -136,7 +141,7 @@ class Visualizacao(QWidget):
             a.resize(ta.width(),a.height())
 
         elif self.tabWidget.currentIndex() == 2:
-            self.carregar_inq()
+            self.carregar_inq(ativo=ativo)
             self.mostrar_inq()
             a = self.tabelaInq.horizontalHeader()
             a.setStretchLastSection(True)
@@ -159,14 +164,6 @@ class Visualizacao(QWidget):
         """
         linha = self.linha
         if len(linha) > 0:
-            dicio = {
-                'Nome' : linha[1].text(),
-                'Casa' : linha[2].text(),
-                'Aluguel' : linha[3].text(),
-                'Ativo' : linha[4].text(),
-                'data vencimento' : linha[5].text(),
-                'mes/ano' : self.Mes.text()
-            }
             gera_recibo(linha[1].text(),linha[5].text(),int(self.Mes.text().split("/")[0]),
                         self.Mes.text().split("/")[1],float(linha[3].text()))
         else:
@@ -267,3 +264,26 @@ class Visualizacao(QWidget):
         info = self.coletaLinha(self.tabelaInq)
         alter = Alterar_inq(self,info)
         alter.show()
+
+    def inqAtivos(self):
+        self.atualizar(ativo=True)
+        self.Ativo_Desativo.setText("Ativo: True")
+        self.Ativo_Desativo.clicked.disconnect(self.inqAtivos)
+        self.Ativo_Desativo.clicked.connect(self.inqInativos)
+    
+    def inqInativos(self):
+        self.atualizar()
+        self.Ativo_Desativo.setText("Ativo: False")
+        self.Ativo_Desativo.clicked.disconnect(self.inqInativos)
+        self.Ativo_Desativo.clicked.connect(self.inqAtivos)
+    
+    def alterar_casa(self):
+        info = self.coletaLinha(self.tabelaCasa)
+        alter = Alterar_inq(self,info)
+        alter.show()
+
+    def casaAtiva(self):
+        pass
+    
+    def casaInativa(self):
+        pass
