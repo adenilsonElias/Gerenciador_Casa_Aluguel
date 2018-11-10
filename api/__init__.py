@@ -55,14 +55,13 @@ class Casa_DAO(DAO):
                 self.conn.rollback()
             return None
 
-
     def todas_casas(self, vazias=False):
         cursor = self.conn.cursor()
         if vazias:
             cursor.execute("""
-                SELECT casa.id_casa, nome_casa, valor_aluguel_casa, agua_casa, num_instalacao
-                FROM casa
-                JOIN contrato ON contrato.id_casa = casa.id_casa AND contrato.ativo;
+                SELECT * FROM casa c
+                JOIN contrato ON contrato.id_casa = casa.id_casa AND NOT contrato.ativo
+                LEFT JOIN instalacao_eletrica i ON c.num_instalacao = i.num_instalacao;
             """)
         else:
             cursor.execute("""
@@ -76,7 +75,8 @@ class Casa_DAO(DAO):
             'nome_casa': x[1],
             'valor_aluguel': x[2],
             'agua_casa': x[3],
-            'num_instalacao_eletrica': x[4]
+            'num_instalacao_eletrica': x[4],
+            'cpf': x[5]
         } for x in casas]
 
     def altera_casa(self, id=None, commit=False, rollback=False,
