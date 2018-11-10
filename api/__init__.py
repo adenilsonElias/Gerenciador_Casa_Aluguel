@@ -51,6 +51,7 @@ class Casa_DAO(DAO):
                 'num_instalacao_eletrica': instalacao_eletrica
             }
         except sqlite3.Error as e:
+            print(e)
             if rollback: 
                 self.conn.rollback()
             return None

@@ -3,24 +3,34 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.uic import loadUi
 
 
-class interagir_casa(QWidget):
-    def __init__(self,parente):
+class Alterar_casa(QWidget):
+    def __init__(self,parente,info):
         super().__init__()
         self.parente = parente
+        self.info = info
         self.ui = self
-        loadUi("interface/cadastrar_casa.ui", self.ui)
-        self.mostrar_RGI()
-        self.mostrar_instalacao()
+        loadUi("interface/Alterar_casa.ui", self.ui)
+        self.botao_cancelar.clicked.connect(self.cancelar)
         self.botao_concluir.clicked.connect(self.pegarItens)
-        self.botao_cancelar.clicked.connect(self.sair)
         self.checkBox_aguaInclusa.stateChanged.connect(self.mostrar_RGI)
         self.checkBox_luzinclusa.stateChanged.connect(self.mostrar_instalacao)
+        self.setInfo()
         self.show()
-
-    def sair(self):
-        """
-        VIEW
-        """
+    
+    def setInfo(self):
+        self.campo_nomeDaCasa.setText(self.info[1].text())
+        self.campo_valorDoAluguel.setText(self.info[2].text())
+        self.RGI.setText(self.info[3].text())
+        self.campo_numero_instalacao.setText(self.info[4].text())
+        self.CPF_titular.setText(self.info[5].text())
+        if self.info[3].text() != "NULL":
+            self.checkBox_aguaInclusa.setChecked(True)
+        if self.info[4].text() != "NULL":
+            self.checkBox_luzinclusa.setChecked(True)
+        self.mostrar_RGI()
+        self.mostrar_instalacao()
+    
+    def cancelar(self):
         self.setParent(None)
         self.hide()
         self.parente.atualizar()
@@ -81,19 +91,14 @@ class interagir_casa(QWidget):
 
 
     def pegarItens(self):
-        """
-        CONTROL pega os itens do views e manda para as apis DAO
-        """
-        conn = make_connection()
-        casas = Casa_DAO(conn)
         instalacao = None
-        if self.checkBox_luzinclusa.checkState() == 2:
-            print("adas")
-            instalacao = self.parente.Instalacao.adiciona_instalacao_eletrica(num_instalacao=self.campo_numero_instalacao.text(),
-                                            cpf=self.CPF_titular.text())
-        self.Casas.adiciona_casa(nome=self.campo_nomeDaCasa.text(),
+        # if self.checkBox_luzinclusa.checkState() == 2:
+        #     print("adas")
+        #     instalacao = ins.adiciona_instalacao_eletrica(num_instalacao=self.campo_numero_instalacao.text(),
+        #                                     cpf=self.CPF_titular.text())
+        self.parente.Casa.altera_casa(nome=self.campo_nomeDaCasa.text(),
                             valor_aluguel=self.campo_valorDoAluguel.text(),
-                            agua=self.RGI.text(),instalacao_eletrica=instalacao,commit=True)         
-        self.sair()
-
-
+                            agua=self.RGI.text(),id=int(self.info[0].text()),instalacao_eletrica=instalacao,commit=True)         
+        self.cancelar()
+        
+        
