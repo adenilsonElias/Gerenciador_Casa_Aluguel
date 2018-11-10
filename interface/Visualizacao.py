@@ -64,8 +64,7 @@ class Visualizacao(QWidget):
         else:
             casas = self.Casa.todas_casas()
         for i in casas:
-            eletrico = i["num_instalacao_eletrica"]
-            info = [str(i["id_casa"]),i["nome_casa"],str(float(i["valor_aluguel"])),i["agua_casa"],"NULL",i["num_instalacao_eletrica"]]
+            info = [str(i["id_casa"]),i["nome_casa"],str(float(i["valor_aluguel"])),i["agua_casa"],i["cpf"],i["num_instalacao_eletrica"]]
             capsula = []
             for j in info:
                 if j == "":
