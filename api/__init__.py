@@ -61,16 +61,18 @@ class Casa_DAO(DAO):
         if vazias:
             cursor.execute("""
                 SELECT * FROM casa c
-                JOIN contrato ON contrato.id_casa = casa.id_casa AND NOT contrato.ativo
+                JOIN contrato ON contrato.id_casa = c.id_casa AND NOT contrato.ativo
                 LEFT JOIN instalacao_eletrica i ON c.num_instalacao = i.num_instalacao;
             """)
         else:
             cursor.execute("""
-                SELECT * FROM casa;
+                SELECT * FROM casa c
+                LEFT JOIN instalacao_eletrica i ON c.num_instalacao = i.num_instalacao;
             """)
 
         casas = cursor.fetchall()
 
+        # print(casas)
         return [{
             'id_casa': x[0],
             'nome_casa': x[1],
