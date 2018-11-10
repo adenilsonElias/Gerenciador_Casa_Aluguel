@@ -89,10 +89,9 @@ class interagir_casa(QWidget):
         instalacao = None
         if self.checkBox_luzinclusa.checkState() == 2:
             print("adas")
-            ins = Instalacao_Eletrica_DAO(conn)
-            instalacao = ins.adiciona_instalacao_eletrica(num_instalacao=self.campo_numero_instalacao.text(),
+            instalacao = self.parente.Instalacao.adiciona_instalacao_eletrica(num_instalacao=self.campo_numero_instalacao.text(),
                                             cpf=self.CPF_titular.text())
-        casas.adiciona_casa(nome=self.campo_nomeDaCasa.text(),
+        self.Casas.adiciona_casa(nome=self.campo_nomeDaCasa.text(),
                             valor_aluguel=self.campo_valorDoAluguel.text(),
                             agua=self.RGI.text(),instalacao_eletrica=instalacao,commit=True)         
         self.sair()
