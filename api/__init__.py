@@ -63,8 +63,9 @@ class Casa_DAO(DAO):
                 SELECT c.id_casa, nome_casa, valor_aluguel_casa,
                        agua_casa, i.num_instalacao, cpf_titular
                 FROM casa c
-                JOIN contrato ON contrato.id_casa = c.id_casa AND NOT contrato.ativo
-                LEFT JOIN instalacao_eletrica i ON c.num_instalacao = i.num_instalacao;
+                LEFT JOIN contrato ON contrato.id_casa = c.id_casa 
+                LEFT JOIN instalacao_eletrica i ON c.num_instalacao = i.num_instalacao
+				WHERE NOT contrato.ativo  OR contrato.ativo IS NULL;
             """)
         else:
             cursor.execute("""
