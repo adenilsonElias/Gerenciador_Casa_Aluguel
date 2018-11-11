@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>Form</class>
  <widget class="QWidget" name="Form">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>SGC</string>
   </property>
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
@@ -88,6 +91,9 @@
      </property>
      <property name="autoScroll">
       <bool>false</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
      </property>
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>false</bool>
@@ -202,6 +208,9 @@
        <height>32</height>
       </rect>
      </property>
+     <property name="inputMask">
+      <string>999.99</string>
+     </property>
     </widget>
     <zorder>Gerar_recibo</zorder>
     <zorder>tabelaContrato</zorder>
@@ -236,6 +245,9 @@
      </property>
      <property name="autoScroll">
       <bool>false</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
      </property>
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>true</bool>
@@ -311,6 +323,9 @@
      </property>
      <property name="alternatingRowColors">
       <bool>false</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
      </property>
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>true</bool>
