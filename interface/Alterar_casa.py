@@ -91,14 +91,14 @@ class Alterar_casa(QWidget):
 
 
     def pegarItens(self):
-        instalacao = None
+        instalacao = self.campo_numero_instalacao.text()
         # if self.checkBox_luzinclusa.checkState() == 2:
         #     print("adas")
         #     instalacao = ins.adiciona_instalacao_eletrica(num_instalacao=self.campo_numero_instalacao.text(),
         #                                     cpf=self.CPF_titular.text())
         self.parente.Casa.altera_casa(nome=self.campo_nomeDaCasa.text(),
                             valor_aluguel=self.campo_valorDoAluguel.text(),
-                            agua=self.RGI.text(),id=int(self.info[0].text()),instalacao_eletrica=instalacao,commit=True)         
+                            agua=self.RGI.text(),id=int(self.info[0].text()),commit=True)         
         self.cancelar()
         
         

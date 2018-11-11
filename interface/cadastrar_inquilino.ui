@@ -162,6 +162,9 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="inputMask">
+    <string>000000.00</string>
+   </property>
   </widget>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
@@ -185,6 +188,9 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="inputMask">
+    <string>99</string>
+   </property>
   </widget>
   <widget class="QLineEdit" name="inicio_do_contrato">
    <property name="geometry">
@@ -194,6 +200,9 @@
      <width>181</width>
      <height>32</height>
     </rect>
+   </property>
+   <property name="inputMask">
+    <string>99/99/9999</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">

@@ -77,7 +77,7 @@ class interagir_Inquilino(QWidget):
         '''
         session = make_connection()
         casa = Casa_DAO(session)
-        mostrar_casa = casa.todas_casas()
+        mostrar_casa = casa.todas_casas(vazias=True)
         for x in mostrar_casa:
             self.comboBox_casa.addItem(x["nome_casa"])
     
