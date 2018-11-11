@@ -54,6 +54,7 @@ class Visualizacao(QWidget):
                 item = QtGui.QStandardItem(j)
                 item.setEditable(False)
                 capsula.append(item)
+            capsula[0].setEnabled(False)
             self.model.appendRow(capsula)
             self.model_auxi.appendRow([x.clone() for x in capsula])
         

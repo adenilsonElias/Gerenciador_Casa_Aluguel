@@ -202,7 +202,16 @@
     </rect>
    </property>
    <property name="inputMask">
-    <string>99/99/9999</string>
+    <string>00/00/0000</string>
+   </property>
+   <property name="text">
+    <string>//</string>
+   </property>
+   <property name="frame">
+    <bool>true</bool>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::Normal</enum>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
