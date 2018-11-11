@@ -141,6 +141,26 @@ class Instalacao_Eletrica_DAO(DAO):
                 self.conn.rollback()
             return None
     
+    def altera_instalacao(self, num_instalacao, cpf, commit=False, rollback=False):
+
+        query = f'''UPDATE instalacao_eletrica
+                SET cpf_titular = ?
+                WHERE num_instalacao = ?  '''
+        print(query)
+
+        # return None
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(query, (cpf, num_instalacao))
+            if commit:
+                self.conn.commit()
+        except sqlite3.Error as e:
+            print("aloo marilente")
+            if rollback:
+                self.conn.rollback()
+            print(e)
+
+
     def todas_instalacoes(self):
         cursor = self.conn.cursor()
         cursor.execute("""
