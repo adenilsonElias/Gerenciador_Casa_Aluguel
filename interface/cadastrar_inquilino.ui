@@ -28,6 +28,9 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="maxLength">
+    <number>200</number>
+   </property>
   </widget>
   <widget class="QLineEdit" name="campo_CPF">
    <property name="geometry">
@@ -38,6 +41,9 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="inputMask">
+    <string>99999999999</string>
+   </property>
   </widget>
   <widget class="QLineEdit" name="campo_RG">
    <property name="geometry">
@@ -47,6 +53,12 @@
      <width>181</width>
      <height>32</height>
     </rect>
+   </property>
+   <property name="inputMask">
+    <string/>
+   </property>
+   <property name="maxLength">
+    <number>20</number>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -163,7 +175,7 @@
     </rect>
    </property>
    <property name="inputMask">
-    <string>000000.00</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="label_5">

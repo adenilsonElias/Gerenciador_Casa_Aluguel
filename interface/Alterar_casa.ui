@@ -25,6 +25,9 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="inputMask">
+    <string>9999999999</string>
+   </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_luzinclusa">
    <property name="geometry">
@@ -64,6 +67,9 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="inputMask">
+    <string>9999999999</string>
+   </property>
   </widget>
   <widget class="QLineEdit" name="campo_nomeDaCasa">
    <property name="geometry">
@@ -77,6 +83,9 @@
    <property name="text">
     <string/>
    </property>
+   <property name="maxLength">
+    <number>200</number>
+   </property>
   </widget>
   <widget class="QLineEdit" name="CPF_titular">
    <property name="geometry">
@@ -86,6 +95,9 @@
      <width>191</width>
      <height>32</height>
     </rect>
+   </property>
+   <property name="inputMask">
+    <string>99999999999</string>
    </property>
   </widget>
   <widget class="QPushButton" name="botao_cancelar">
@@ -193,6 +205,9 @@
      <width>191</width>
      <height>32</height>
     </rect>
+   </property>
+   <property name="inputMask">
+    <string/>
    </property>
    <property name="text">
     <string/>

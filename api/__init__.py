@@ -63,9 +63,12 @@ class Casa_DAO(DAO):
                 SELECT c.id_casa, nome_casa, valor_aluguel_casa,
                        agua_casa, i.num_instalacao, cpf_titular
                 FROM casa c
-                LEFT JOIN contrato ON contrato.id_casa = c.id_casa 
                 LEFT JOIN instalacao_eletrica i ON c.num_instalacao = i.num_instalacao
-				WHERE NOT contrato.ativo  OR contrato.ativo IS NULL;
+                WHERE c.id_casa NOT IN (
+                    SELECT casa.id_casa from casa
+                    JOIN contrato ON contrato.id_casa= casa.id_casa
+                    WHERE ativo )
+                GROUP BY c.id_casa;
             """)
         else:
             cursor.execute("""
@@ -248,8 +251,6 @@ class Inquilino_DAO(DAO):
                 self.conn.rollback()
             print(e)
 
-
-
 class Contrato_DAO(DAO):
 
     def adiciona_contrato(self, valor=None, ativo=True, dia_vencimento=None,
@@ -351,6 +352,18 @@ class Contrato_DAO(DAO):
         if id is None:
             raise Exception("Necessário prover um ID")
 
+        id_casa = self.get_contrato(id)['id_casa']
+
+        casa_dao = Casa_DAO(make_connection())
+
+        vazias = casa_dao.todas_casas(vazias=True)
+        # print('vazias:', '\n'.join([str(x) for x in vazias]))
+        # print('id:', id_casa, 'type:', type(id_casa))
+        print([x['id_casa'] for x in vazias])
+        if id_casa not in [x['id_casa'] for x in vazias]:
+            print('\n'*8 , 'o terezinha', '\n'*9)
+            raise Exception("Casa Ja ocupada")
+
         query = '''UPDATE contrato
                 SET ativo = 1
                 WHERE id_contrato = ?'''
@@ -364,6 +377,24 @@ class Contrato_DAO(DAO):
             if rollback:
                 self.conn.rollback()
             print(e)
+
+    def get_contrato(self, id):
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT * FROM contrato
+            WHERE id_contrato = ?;
+        """, tuple([id]))
+        contratos = cursor.fetchall()
+        return [{
+            'id_contrato': x[0],
+            'valor': x[1],
+            'ativo': x[2],
+            'dt_fim_contrato': x[3],
+            'dia_venc_aluguel': x[4],
+            'id_casa': x[5],
+            'id_inq': x[6]
+
+        } for x in contratos][0]
 
 class PagamentoDAO(DAO):
 
