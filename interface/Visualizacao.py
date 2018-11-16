@@ -8,6 +8,7 @@ from cadastrar_casa import interagir_casa
 from cadastrar_inquilino import interagir_Inquilino
 from Alterar_inq import Alterar_inq
 from Alterar_casa import Alterar_casa
+from Contrato import Contrato
 
 class Visualizacao(QWidget):
     def __init__(self):
@@ -27,6 +28,7 @@ class Visualizacao(QWidget):
         self.Ativo_Desativo.clicked.connect(self.inqInativos)
         self.Alter_casa.clicked.connect(self.alterar_casa)
         self.Ativo_Desativo_casa.clicked.connect(self.casaInativa)
+        self.Novo_con.clicked.connect(self.novoContrato)
         self.inqInativos()
         self.casaInativa()
         self.show()
@@ -250,6 +252,10 @@ class Visualizacao(QWidget):
         self.Contrato.altera_valor_contrato(int(linha[0].text()),float(valor),commit=True)
         self._disativaBotoes()
         self.atualizar()
+
+    def novoContrato(self):
+        contrato = Contrato(self)
+        contrato.show()
     # ==========================================================================
     # ==========================================================================
     # aba 2 casas

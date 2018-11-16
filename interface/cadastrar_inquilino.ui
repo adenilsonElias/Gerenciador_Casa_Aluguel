@@ -9,9 +9,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>198</width>
-    <height>505</height>
+    <width>190</width>
+    <height>512</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>190</width>
+    <height>512</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>190</width>
+    <height>512</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>cadastrar</string>
@@ -19,239 +31,152 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
-  <widget class="QLineEdit" name="campo_nome">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>30</y>
-     <width>181</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>200</number>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="campo_CPF">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>90</y>
-     <width>181</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="inputMask">
-    <string>99999999999</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="campo_RG">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>150</y>
-     <width>181</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="inputMask">
-    <string/>
-   </property>
-   <property name="maxLength">
-    <number>20</number>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>111</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Nome</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>70</y>
-     <width>58</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>CPF</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>130</y>
-     <width>58</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>RG</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="botao_concluir">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>470</y>
-     <width>88</width>
-     <height>34</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Concluir</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="botao_cancelar">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>470</y>
-     <width>81</width>
-     <height>34</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Cancelar</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>190</y>
-     <width>58</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Casa</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="comboBox_casa">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>210</y>
-     <width>181</width>
-     <height>32</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="tipo_aluguel">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>370</y>
-     <width>121</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Aluguel padrao</string>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="Novo_aluguel">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>430</y>
-     <width>181</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="inputMask">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>250</y>
-     <width>81</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Vencimento</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="vencimento">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>270</y>
-     <width>181</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="inputMask">
-    <string>99</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="inicio_do_contrato">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>330</y>
-     <width>181</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="inputMask">
-    <string>00/00/0000</string>
-   </property>
-   <property name="text">
-    <string>//</string>
-   </property>
-   <property name="frame">
-    <bool>true</bool>
-   </property>
-   <property name="echoMode">
-    <enum>QLineEdit::Normal</enum>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_6">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>310</y>
-     <width>181</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Inicio do contrato</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_7">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>400</y>
-     <width>91</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Novo Aluguel</string>
-   </property>
-  </widget>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Nome</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="campo_nome">
+       <property name="maxLength">
+        <number>200</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>CPF</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="campo_CPF">
+       <property name="inputMask">
+        <string>99999999999</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>RG</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="campo_RG">
+       <property name="inputMask">
+        <string/>
+       </property>
+       <property name="maxLength">
+        <number>20</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Casa</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox_casa"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Vencimento</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="vencimento">
+       <property name="inputMask">
+        <string>99</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Inicio do contrato</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="inicio_do_contrato">
+       <property name="inputMask">
+        <string>00/00/0000</string>
+       </property>
+       <property name="text">
+        <string>//</string>
+       </property>
+       <property name="frame">
+        <bool>true</bool>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Normal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="tipo_aluguel">
+       <property name="text">
+        <string>Aluguel padrao</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_7">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Novo Aluguel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="Novo_aluguel">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="inputMask">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="botao_concluir">
+         <property name="text">
+          <string>Concluir</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="botao_cancelar">
+         <property name="text">
+          <string>Cancelar</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <tabstops>
   <tabstop>campo_nome</tabstop>

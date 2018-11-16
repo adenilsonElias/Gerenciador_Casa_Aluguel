@@ -285,6 +285,7 @@ class Contrato_DAO(DAO):
                 'id_inq': inq
                 }
         except sqlite3.Error as e:
+            print(e)
             if rollback:
                 self.conn.rollback()
             return None

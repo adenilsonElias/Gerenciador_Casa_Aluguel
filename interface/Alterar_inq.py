@@ -54,3 +54,7 @@ class Alterar_inq(QWidget):
                                                 cpf=cpf,
                                                 commit=True)
         self.cancelar(atualizar=True)
+
+    def closeEvent(self,event):
+        event.ignore()
+        self.cancelar() 

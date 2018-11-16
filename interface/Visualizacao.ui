@@ -165,7 +165,7 @@
          <item>
           <widget class="QPushButton" name="Gerar_recibo">
            <property name="text">
-            <string>gerar recibo</string>
+            <string>Gerar Recibo</string>
            </property>
           </widget>
          </item>
@@ -205,6 +205,13 @@
           <widget class="QPushButton" name="At_De">
            <property name="text">
             <string>PushButton</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="Novo_con">
+           <property name="text">
+            <string>Novo Contrato</string>
            </property>
           </widget>
          </item>
