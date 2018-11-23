@@ -274,6 +274,7 @@ class Contrato_DAO(DAO):
             raise Exception("Necessário escolher um inquilino")
         try:
             cursor = self.conn.cursor()
+            self._valida(inq, casa)
             print(type(inq))
             cursor.execute("""
                 INSERT INTO
@@ -296,6 +297,13 @@ class Contrato_DAO(DAO):
             if rollback:
                 self.conn.rollback()
             return None
+
+    def _valida(self, id_inq=None, id_casa=None):
+        c = Contrato_DAO(make_connection())
+        if id_inq and id_inq in [x['id_inq'] for x in c.todos_contratos() if x['ativo']]:
+            raise Exception("inquilino invalido")
+        if id_casa and id_casa in [x['id_casa'] for x in c.todos_contratos() if x['ativo']]:
+            raise Exception("casa invalido")
 
     def todos_contratos(self):
         cursor = self.conn.cursor()
@@ -359,7 +367,7 @@ class Contrato_DAO(DAO):
         
         if id is None:
             raise Exception("Necessário prover um ID")
-
+        self._valida(id)
         query = '''UPDATE contrato
                 SET ativo = 1
                 WHERE id_contrato = ?'''
