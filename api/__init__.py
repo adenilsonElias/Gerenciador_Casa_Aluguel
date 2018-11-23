@@ -205,13 +205,22 @@ class Inquilino_DAO(DAO):
                 self.conn.rollback()
             return None 
 
-    def todos_inquilinos(self, ativos=False):
+    def todos_inquilinos(self, ativos=False, inativos=False):
         cursor = self.conn.cursor()
-        if ativos:
+
+        if ativos and inativos:
+            raise Exception("Conflito")
+        elif ativos:
+            print('a')
             cursor.execute("""
-                SELECT contrato.id_inq, cpf_inq, nome_inq, rg_inq FROM inquilino
-                JOIN contrato ON contrato.id_inq = inquilino.id_inq
-                WHERE ativo;
+                select * from inquilino 
+                where id_inq in (select DISTINCT id_inq from contrato where ativo);
+            """)
+        elif inativos:
+            print('i')
+            cursor.execute("""
+                select * from inquilino 
+                where id_inq not in (select DISTINCT id_inq from contrato where ativo);
             """)
         else:
             cursor.execute("""
