@@ -15,6 +15,13 @@ def make_connection():
     return sqlite3.connect(config.DATABASE_URL)
 
 
+class InquilinoException(Exception):
+    ...
+class CasaException(Exception):
+    ...
+
+
+
 class DAO():
 
 
@@ -302,10 +309,11 @@ class Contrato_DAO(DAO):
 
     def _valida(self, id_inq=None, id_casa=None):
         c = Contrato_DAO(make_connection())
+        print(id_inq, id_casa)
         if id_inq and id_inq in [x['id_inq'] for x in c.todos_contratos() if x['ativo']]:
-            raise Exception("inquilino invalido")
+            raise InquilinoException()
         if id_casa and id_casa in [x['id_casa'] for x in c.todos_contratos() if x['ativo']]:
-            raise Exception("casa invalido")
+            raise CasaException()
 
     def todos_contratos(self):
         cursor = self.conn.cursor()
@@ -369,23 +377,7 @@ class Contrato_DAO(DAO):
         
         if id is None:
             raise Exception("Necessário prover um ID")
-<<<<<<< HEAD
-        self._valida(id)
-=======
-
-        id_casa = self.get_contrato(id)['id_casa']
-
-        casa_dao = Casa_DAO(make_connection())
-
-        vazias = casa_dao.todas_casas(vazias=True)
-        # print('vazias:', '\n'.join([str(x) for x in vazias]))
-        # print('id:', id_casa, 'type:', type(id_casa))
-        print([x['id_casa'] for x in vazias])
-        if id_casa not in [x['id_casa'] for x in vazias]:
-            print('\n'*8 , 'o terezinha', '\n'*9)
-            raise Exception("Casa Ja ocupada")
-
->>>>>>> b24fd5eadf6d9fb847b9da0259a98f0e08d8ddae
+        self._valida(self.get_contrato(id)['id_inq'])
         query = '''UPDATE contrato
                 SET ativo = 1
                 WHERE id_contrato = ?'''
