@@ -310,6 +310,7 @@ class Contrato_DAO(DAO):
     def _valida(self, id_inq=None, id_casa=None):
         c = Contrato_DAO(make_connection())
         print(id_inq, id_casa)
+        print([x['id_casa'] for x in c.todos_contratos() if x['ativo']])
         if id_inq and id_inq in [x['id_inq'] for x in c.todos_contratos() if x['ativo']]:
             raise InquilinoException()
         if id_casa and id_casa in [x['id_casa'] for x in c.todos_contratos() if x['ativo']]:
@@ -377,7 +378,8 @@ class Contrato_DAO(DAO):
         
         if id is None:
             raise Exception("Necessário prover um ID")
-        self._valida(self.get_contrato(id)['id_inq'])
+        C = self.get_contrato(id)
+        self._valida(C['id_inq'], C['id_casa'] )
         query = '''UPDATE contrato
                 SET ativo = 1
                 WHERE id_contrato = ?'''
