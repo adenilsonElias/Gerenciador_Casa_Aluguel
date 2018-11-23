@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget,QMessageBox
 from PyQt5 import QtGui,QtCore
 from PyQt5.uic import loadUi
 from api import *
@@ -8,6 +8,7 @@ from cadastrar_casa import interagir_casa
 from cadastrar_inquilino import interagir_Inquilino
 from Alterar_inq import Alterar_inq
 from Alterar_casa import Alterar_casa
+from Contrato import Contrato
 
 class Visualizacao(QWidget):
     def __init__(self):
@@ -27,6 +28,7 @@ class Visualizacao(QWidget):
         self.Ativo_Desativo.clicked.connect(self.inqInativos)
         self.Alter_casa.clicked.connect(self.alterar_casa)
         self.Ativo_Desativo_casa.clicked.connect(self.casaInativa)
+        self.Novo_con.clicked.connect(self.novoContrato)
         self.inqInativos()
         self.casaInativa()
         self.show()
@@ -54,6 +56,7 @@ class Visualizacao(QWidget):
                 item = QtGui.QStandardItem(j)
                 item.setEditable(False)
                 capsula.append(item)
+            capsula[0].setEnabled(False)
             self.model.appendRow(capsula)
             self.model_auxi.appendRow([x.clone() for x in capsula])
         
@@ -146,6 +149,7 @@ class Visualizacao(QWidget):
         ARRUMAR 
         """
         if self.tabWidget.currentIndex() == 0:
+            self._disativaBotoes()
             self.carregar_contrato()
             self.mostrar_contrato()
             self.tabelaContrato.selectionModel().currentRowChanged.connect(self.ativa_desativa)
@@ -194,17 +198,14 @@ class Visualizacao(QWidget):
         CONTROL pega o item selecionado e manda as informaçoes para gerar o recibo.pdf
         """
         linha = self.coletaLinha(self.tabelaContrato,original=True)
-        if len(linha) > 0:
-            gera_recibo(linha[1].text(),linha[5].text(),int(self.Mes.text().split("/")[0]),
-                        self.Mes.text().split("/")[1],float(linha[3].text()))
-        else:
-            print("errou")
+        gera_recibo(linha[1].text(),linha[5].text(),int(self.Mes.text().split("/")[0]),
+                    self.Mes.text().split("/")[1],float(linha[3].text()))
 
     def ativa_desativa(self):
         self.tabelaContrato.selectionModel().currentRowChanged.disconnect(self.ativa_desativa)
         self.linha = self.coletaLinha(self.tabelaContrato)
         if (len(self.linha) > 0):
-            self.Idsao.setText(self.linha[0].text())
+            # self.Idsao.setText(self.linha[0].text())
             if self.linha[4].text() == "1":
                 self.Gerar_recibo.setEnabled(True)
                 self.At_De.setText("Desativar")
@@ -226,7 +227,7 @@ class Visualizacao(QWidget):
         self.New_value.setEnabled(False)
         self.Valor.setEnabled(False)
         self.New_value.setText("")
-        self.Idsao.setText("")
+        # self.Idsao.setText("")
         self.Gerar_recibo.setEnabled(False)
         self.At_De.setEnabled(False)
         self.At_De.setText("Ativa/Desativa")
@@ -236,15 +237,25 @@ class Visualizacao(QWidget):
         if linha[4].text() == "1":
             self.Contrato.inativa_contrato(id=int(linha[0].text()),commit=True)
         else:
-            self.Contrato.ativa_contrato(id=int(linha[0].text()),commit=True)
+            try:
+                self.Contrato.ativa_contrato(id=int(linha[0].text()),commit=True)
+            except:
+                self.mensagem("Casa ja está ocupada")
         self._disativaBotoes()
         self.atualizar()
 
 
     def alterar_valor(self):
+        valor = self.New_value.text()
+        print(valor)
         linha = self.coletaLinha(self.tabelaContrato,True)
-        self.Contrato.altera_valor_contrato(int(linha[0].text()),float(self.New_value.text()),commit=True)
+        self.Contrato.altera_valor_contrato(int(linha[0].text()),float(valor),commit=True)
         self._disativaBotoes()
+        self.atualizar()
+
+    def novoContrato(self):
+        contrato = Contrato(self)
+        contrato.show()
     # ==========================================================================
     # ==========================================================================
     # aba 2 casas
@@ -254,6 +265,9 @@ class Visualizacao(QWidget):
 
     def alterar_casa(self):
         info = self.coletaLinha(self.tabelaCasa)
+        if len(info) == 0:
+            self.mensagem("Nenhuma casa selecionada")
+            return
         alter = Alterar_casa(self,info)
         alter.show()
 
@@ -277,6 +291,9 @@ class Visualizacao(QWidget):
 
     def alterar_inq_func(self):
         info = self.coletaLinha(self.tabelaInq)
+        if len(info) == 0:
+            self.mensagem("Nenhum inquilino selecionado")
+            return
         alter = Alterar_inq(self,info)
         alter.show()
 
@@ -292,7 +309,10 @@ class Visualizacao(QWidget):
         self.Ativo_Desativo.clicked.disconnect(self.inqInativos)
         self.Ativo_Desativo.clicked.connect(self.inqAtivos)
     
-    
+    def mensagem(self, mensa):
+        mens = QMessageBox()
+        mens.setText(mensa)
+        mens.exec()
 
 
 
