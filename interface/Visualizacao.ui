@@ -30,7 +30,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../../../../../../../../../home/adenilson/IconeSGC.png</normaloff>../../../../../../../../../home/adenilson/IconeSGC.png</iconset>
+    <normaloff>IconeSGC.png</normaloff>IconeSGC.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
