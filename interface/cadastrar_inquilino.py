@@ -15,7 +15,6 @@ class interagir_Inquilino(QWidget):
         self.botao_cancelar.clicked.connect(self.cancelar)
         self.tipo_aluguel.stateChanged.connect(self.novo_aluguel)
         self.novo_aluguel()
-        # self.ignore()
         self.addInList()
 
     def mensagem(self, mensa):
@@ -81,27 +80,11 @@ class interagir_Inquilino(QWidget):
         Controla os novos elementos na interface
         '''
         if self.tipo_aluguel.checkState() == 0:
-            # self.resize(self.width(), self.botao_concluir.y() + 40)
-            # self.setFixedSize(self.width(), self.botao_concluir.y() + 40)
-            # self.label_7.show()
-            # self.Novo_aluguel.show()
             self.label_7.setEnabled(True)
             self.Novo_aluguel.setEnabled(True)
-            # self.botao_concluir.move(self.botao_concluir.x(),
-                                    #  self.Novo_aluguel.y() + 40)
-            # self.botao_cancelar.move(self.botao_cancelar.x(),
-                                    #  self.Novo_aluguel.y() + 40)
         else:
-            # self.label_7.hide()
-            # self.Novo_aluguel.hide()
             self.label_7.setEnabled(False)
             self.Novo_aluguel.setEnabled(False)
-            # self.botao_concluir.move(self.botao_concluir.x(),
-                                    #  self.tipo_aluguel.y() + 32)
-            # self.botao_cancelar.move(self.botao_cancelar.x(),
-                                    #  self.tipo/_aluguel.y() + 32)
-            # self.resize(self.width(), self.bota/o_concluir.y() + 40)
-            # self.setFixedSize(self.width(), self.botao_concluir.y() + 40)
 
     def cancelar(self):
         """

@@ -36,7 +36,7 @@ class Visualizacao(QWidget):
     #========================================================================
     # carrega models e mostra na tela
 
-    def carregar_inq(self,ativo=False):
+    def carregar_inq(self,ativo=False,inativo = False):
         """
         CONTROL
         função responsavel por criar os model do QT para inquilino
@@ -44,9 +44,12 @@ class Visualizacao(QWidget):
         self.model_auxi = QtGui.QStandardItemModel()
         self.model = QtGui.QStandardItemModel()
         self.model.setHorizontalHeaderLabels(["id","Nome","CPF","RG"])
-
+        if ativo and inativo:
+            raise Exception("ativo e inativo True")
         if ativo:
-            inquilinos = self.Inquilino.todos_inquilinos(True)
+            inquilinos = self.Inquilino.todos_inquilinos(ativos=True)
+        elif inativo:
+            inquilinos = self.Inquilino.todos_inquilinos(inativos=True)
         else:
             inquilinos = self.Inquilino.todos_inquilinos()
         for i in inquilinos:
@@ -143,7 +146,7 @@ class Visualizacao(QWidget):
 
     # ==========================================================================
     # controle abas gerais 
-    def atualizar(self,vai = True,ativo=False):
+    def atualizar(self,vai = True,ativo=False,inativo = False):
         """
         VIEW responsavel pelas mudanças de abas
         ARRUMAR 
@@ -171,7 +174,7 @@ class Visualizacao(QWidget):
             a.resize(ta.width(),a.height())
 
         elif self.tabWidget.currentIndex() == 2:
-            self.carregar_inq(ativo=ativo)
+            self.carregar_inq(ativo=ativo,inativo=inativo)
             self.mostrar_inq()
             a = self.tabelaInq.horizontalHeader()
             a.setStretchLastSection(True)
@@ -205,7 +208,6 @@ class Visualizacao(QWidget):
         self.tabelaContrato.selectionModel().currentRowChanged.disconnect(self.ativa_desativa)
         self.linha = self.coletaLinha(self.tabelaContrato)
         if (len(self.linha) > 0):
-            # self.Idsao.setText(self.linha[0].text())
             if self.linha[4].text() == "1":
                 self.Gerar_recibo.setEnabled(True)
                 self.At_De.setText("Desativar")
@@ -227,7 +229,6 @@ class Visualizacao(QWidget):
         self.New_value.setEnabled(False)
         self.Valor.setEnabled(False)
         self.New_value.setText("")
-        # self.Idsao.setText("")
         self.Gerar_recibo.setEnabled(False)
         self.At_De.setEnabled(False)
         self.At_De.setText("Ativa/Desativa")
@@ -239,8 +240,10 @@ class Visualizacao(QWidget):
         else:
             try:
                 self.Contrato.ativa_contrato(id=int(linha[0].text()),commit=True)
-            except:
-                self.mensagem("Casa ja está ocupada")
+            except InquilinoException:
+                self.mensagem("Inquilino ja esta ativo em outro contrato")
+            except CasaException:
+                self.mensagem("Casa ja esta oucupada")
         self._disativaBotoes()
         self.atualizar()
 
@@ -273,13 +276,13 @@ class Visualizacao(QWidget):
 
     def casaAtiva(self):
         self.atualizar(ativo=True)
-        self.Ativo_Desativo_casa.setText("Ativo: True")
+        self.Ativo_Desativo_casa.setText("Todas")
         self.Ativo_Desativo_casa.clicked.disconnect(self.casaAtiva)
         self.Ativo_Desativo_casa.clicked.connect(self.casaInativa)
     
     def casaInativa(self):
         self.atualizar()
-        self.Ativo_Desativo_casa.setText("Ativo: False")
+        self.Ativo_Desativo_casa.setText("Vazias")
         self.Ativo_Desativo_casa.clicked.disconnect(self.casaInativa)
         self.Ativo_Desativo_casa.clicked.connect(self.casaAtiva)
     # ==========================================================================
@@ -297,18 +300,24 @@ class Visualizacao(QWidget):
         alter = Alterar_inq(self,info)
         alter.show()
 
-    def inqAtivos(self):
+    def TodosInq(self):
         self.atualizar(ativo=True)
-        self.Ativo_Desativo.setText("Ativo: True")
-        self.Ativo_Desativo.clicked.disconnect(self.inqAtivos)
+        self.Ativo_Desativo.setText("Todos")
+        self.Ativo_Desativo.clicked.disconnect(self.TodosInq)
         self.Ativo_Desativo.clicked.connect(self.inqInativos)
 
     def inqInativos(self):
         self.atualizar()
-        self.Ativo_Desativo.setText("Ativo: False")
+        self.Ativo_Desativo.setText("Sem contrato")
         self.Ativo_Desativo.clicked.disconnect(self.inqInativos)
         self.Ativo_Desativo.clicked.connect(self.inqAtivos)
     
+    def inqAtivos(self):
+        self.atualizar(inativo=True)
+        self.Ativo_Desativo.setText("Com contrato")
+        self.Ativo_Desativo.clicked.disconnect(self.inqAtivos)
+        self.Ativo_Desativo.clicked.connect(self.TodosInq)
+
     def mensagem(self, mensa):
         mens = QMessageBox()
         mens.setText(mensa)

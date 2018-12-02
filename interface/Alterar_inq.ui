@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>198</width>
-    <height>230</height>
+    <height>236</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>198</width>
-    <height>230</height>
+    <height>236</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -23,9 +23,13 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>SGC</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_2">
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../../../../../../../../home/adenilson/IconeSGC.png</normaloff>../../../../../../../../../home/adenilson/IconeSGC.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>

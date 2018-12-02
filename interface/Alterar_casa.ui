@@ -18,12 +18,16 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>210</width>
-    <height>416</height>
+    <width>347</width>
+    <height>469</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>SGC</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../../../../../../../../home/adenilson/IconeSGC.png</normaloff>../../../../../../../../../home/adenilson/IconeSGC.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>

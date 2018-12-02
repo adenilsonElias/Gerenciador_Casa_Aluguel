@@ -16,7 +16,7 @@ class Contrato(QWidget):
 
     def carregar(self):
         self.casas = self.parente.Casa.todas_casas(vazias=True)            
-        inqs = self.parente.Inquilino.todos_inquilinos() # alterar aqui
+        inqs = self.parente.Inquilino.todos_inquilinos(inativos=True) # alterar aqui
         for x in self.casas:
             self.Casa.addItem(str(x["id_casa"]) + "-" + x["nome_casa"])
         for x in inqs:
@@ -69,7 +69,6 @@ class Contrato(QWidget):
 
     def mensagem(self, mensa):
         mens = QMessageBox()
-        # mens.buttonClicked.connect(self.sair)
         mens.setText(mensa)
         mens.exec()
     

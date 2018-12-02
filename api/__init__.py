@@ -58,7 +58,6 @@ class Casa_DAO(DAO):
                 'num_instalacao_eletrica': instalacao_eletrica
             }
         except sqlite3.Error as e:
-            print(e)
             if rollback: 
                 self.conn.rollback()
             return None
@@ -87,7 +86,6 @@ class Casa_DAO(DAO):
 
         casas = cursor.fetchall()
 
-        # print(casas)
         return [{
             'id_casa': x[0],
             'nome_casa': x[1],
@@ -108,7 +106,6 @@ class Casa_DAO(DAO):
         query = f'''UPDATE casa
                 SET {', '.join([f"{key}{'_casa' if key != 'num_instalacao' else '' } = ?" for key in kwargs.keys()])}
                 WHERE id_casa = ?'''
-        print(query)
 
         # return None
         try:
@@ -117,10 +114,8 @@ class Casa_DAO(DAO):
             if commit:
                 self.conn.commit()
         except sqlite3.Error as e:
-            print("aloo marilente")
             if rollback:
                 self.conn.rollback()
-            print(e)
 
 
 
@@ -157,7 +152,6 @@ class Instalacao_Eletrica_DAO(DAO):
         query = f'''UPDATE instalacao_eletrica
                 SET cpf_titular = ?
                 WHERE num_instalacao = ?  '''
-        print(query)
 
         # return None
         try:
@@ -166,10 +160,8 @@ class Instalacao_Eletrica_DAO(DAO):
             if commit:
                 self.conn.commit()
         except sqlite3.Error as e:
-            print("aloo marilente")
             if rollback:
                 self.conn.rollback()
-            print(e)
 
 
     def todas_instalacoes(self):
@@ -221,13 +213,11 @@ class Inquilino_DAO(DAO):
         if ativos and inativos:
             raise Exception("Conflito")
         elif ativos:
-            print('a')
             cursor.execute("""
                 select * from inquilino 
                 where id_inq in (select DISTINCT id_inq from contrato where ativo);
             """)
         elif inativos:
-            print('i')
             cursor.execute("""
                 select * from inquilino 
                 where id_inq not in (select DISTINCT id_inq from contrato where ativo);
@@ -255,17 +245,14 @@ class Inquilino_DAO(DAO):
         query = f'''UPDATE inquilino
                 SET {', '.join([f'{key}_inq = ?' for key in kwargs.keys()])}
                 WHERE id_inq = ?'''
-        print(query)
         try:
             cursor = self.conn.cursor()
             cursor.execute(query, tuple((kwargs[k] for k in kwargs.keys())) + tuple([id]))
             if commit:
                 self.conn.commit()
         except sqlite3.Error as e:
-            print("aloo marilente")
             if rollback:
                 self.conn.rollback()
-            print(e)
 
 class Contrato_DAO(DAO):
 
@@ -283,7 +270,6 @@ class Contrato_DAO(DAO):
         try:
             cursor = self.conn.cursor()
             self._valida(inq, casa)
-            print(type(inq))
             cursor.execute("""
                 INSERT INTO
                 contrato(valor, ativo, dt_fim_contrato, dia_venc_aluguel, id_casa, id_inq)
@@ -302,15 +288,12 @@ class Contrato_DAO(DAO):
                 'id_inq': inq
                 }
         except sqlite3.Error as e:
-            print(e)
             if rollback:
                 self.conn.rollback()
             return None
 
     def _valida(self, id_inq=None, id_casa=None):
         c = Contrato_DAO(make_connection())
-        print(id_inq, id_casa)
-        print([x['id_casa'] for x in c.todos_contratos() if x['ativo']])
         if id_inq and id_inq in [x['id_inq'] for x in c.todos_contratos() if x['ativo']]:
             raise InquilinoException()
         if id_casa and id_casa in [x['id_casa'] for x in c.todos_contratos() if x['ativo']]:
@@ -353,7 +336,6 @@ class Contrato_DAO(DAO):
         except sqlite3.Error as e:
             if rollback:
                 self.conn.rollback()
-            print(e)
 
     def inativa_contrato(self, id=None, commit=False, rollback=False):
         
@@ -372,7 +354,6 @@ class Contrato_DAO(DAO):
         except sqlite3.Error as e:
             if rollback:
                 self.conn.rollback()
-            print(e)
     
     def ativa_contrato(self, id=None, commit=False, rollback=False):
         
@@ -392,7 +373,6 @@ class Contrato_DAO(DAO):
         except sqlite3.Error as e:
             if rollback:
                 self.conn.rollback()
-            print(e)
 
     def get_contrato(self, id):
         cursor = self.conn.cursor()

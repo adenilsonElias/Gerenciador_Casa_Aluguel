@@ -26,7 +26,11 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Cadastrar casa</string>
+   <string>SGC</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../../../../../../../../home/adenilson/IconeSGC.png</normaloff>../../../../../../../../../home/adenilson/IconeSGC.png</iconset>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>

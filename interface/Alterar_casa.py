@@ -46,19 +46,10 @@ class Alterar_casa(QWidget):
         if self.checkBox_aguaInclusa.checkState() == 2:
             self.label_5.setEnabled(True)
             self.RGI.setEnabled(True)
-            # self.label_5.show()
-            # self.RGI.show()
-            # self.checkBox_luzinclusa.move(
-            #     self.checkBox_luzinclusa.x(), self.RGI.y() + 40)
-            # self.mostrar_instalacao()
+
         else:
             self.label_5.setEnabled(False)
             self.RGI.setEnabled(False)
-            # self.label_5.hide()
-            # self.RGI.hide()
-            # self.checkBox_luzinclusa.move(
-            #     self.checkBox_luzinclusa.x(), self.checkBox_aguaInclusa.y() + 30)
-            # self.mostrar_instalacao()
 
     def mostrar_instalacao(self):
         """
@@ -70,41 +61,11 @@ class Alterar_casa(QWidget):
             self.label_3.setEnabled(True)
             self.CPF_titular.setEnabled(True)
 
-            # self.label_4.show()
-            # self.label_4.move(self.label_4.x(),
-            #                   self.checkBox_luzinclusa.y() + 30)
-            # self.campo_numero_instalacao.show()
-            # self.campo_numero_instalacao.move(self.campo_numero_instalacao.x(),
-            #                                   self.label_4.y() + 30)
-            # self.label_3.show()
-            # self.label_3.move(self.label_3.x(),
-            #                   self.campo_numero_instalacao.y() + 30)
-            # self.CPF_titular.show()
-            # self.CPF_titular.move(self.CPF_titular.x(), self.label_3.y() + 30)
-            # self.botao_concluir.move(
-            #     self.botao_concluir.x(), self.CPF_titular.y() + 40)
-            # self.botao_cancelar.move(
-            #     self.botao_cancelar.x(), self.CPF_titular.y() + 40)
-            # self.resize(self.width(), self.botao_concluir.y() + 40)
-            # self.setFixedSize(self.width(), self.botao_concluir.y() + 40)
-
         else:
             self.label_4.setEnabled(False)
             self.campo_numero_instalacao.setEnabled(False)
             self.label_3.setEnabled(False)
             self.CPF_titular.setEnabled(False)
-
-            # self.label_4.hide()
-            # self.campo_numero_instalacao.hide()
-            # self.label_3.hide()
-            # self.CPF_titular.hide()
-            # self.botao_concluir.move(
-            #     self.botao_concluir.x(), self.checkBox_luzinclusa.y() + 30)
-            # self.botao_cancelar.move(
-            #     self.botao_cancelar.x(), self.checkBox_luzinclusa.y() + 30)
-            # self.resize(self.width(), self.botao_concluir.y() + 40)
-            # self.setFixedSize(self.width(), self.botao_concluir.y() + 40)
-
 
     def pegarItens(self):
         instalacao = None
@@ -133,9 +94,8 @@ class Alterar_casa(QWidget):
         if len(nome) == 0:
             self.mensagem("Nome vazio")
             return
-        aluguel = self.campo_valorDoAluguel.text()
         try:
-            a = float(aluguel)
+            aluguel = float(self.campo_valorDoAluguel.text())
         except:
             self.mensagem("Erro aluguel")
             return        

@@ -28,6 +28,10 @@
   <property name="windowTitle">
    <string>SGC</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../../../../../../../../home/adenilson/IconeSGC.png</normaloff>../../../../../../../../../home/adenilson/IconeSGC.png</iconset>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
     <widget class="QTabWidget" name="tabWidget">
